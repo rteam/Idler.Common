@@ -1,0 +1,14 @@
+<Project>
+    <PropertyGroup>
+        <LangVersion>latest</LangVersion>
+        <Version>0.1.2</Version>
+        <PackageProjectUrl>https://space.bilibili.com/12002462/</PackageProjectUrl>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryType>git</RepositoryType>
+        <RepositoryUrl>https://github.com/rteam/idler.common/</RepositoryUrl>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <Authors>rteam</Authors>
+        <Product>Idler.Common</Product>
+    </PropertyGroup>
+</Project>
+  
