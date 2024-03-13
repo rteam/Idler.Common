@@ -1,4 +1,5 @@
 using System;
+
 namespace Idler.Common.Core.Authentication
 {
     public class CoreClaimTypes
@@ -9,9 +10,19 @@ namespace Idler.Common.Core.Authentication
         public const string USER_NAME = "UserName";
 
         /// <summary>
-        /// UserId.
+        /// UserId
         /// </summary>
         public const string USER_ID = "UserId";
+
+        /// <summary>
+        /// Email
+        /// </summary>
+        public const string EMAIL = "Email";
+
+        /// <summary>
+        /// 手机号
+        /// </summary>
+        public const string MOBILE = "Mobile";
 
         /// <summary>
         /// 角色
@@ -37,6 +48,5 @@ namespace Idler.Common.Core.Authentication
         /// 用户类型
         /// </summary>
         public const string USER_TYPE = "UserType";
-
     }
 }
