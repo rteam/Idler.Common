@@ -21,28 +21,28 @@ namespace Idler.Common.Core.Config
         /// <summary>
         /// 加载制定配置
         /// </summary>
-        /// <param name="ConfigName"></param>
-        public LocalConfigurationAccessHelper(string ConfigName)
+        /// <param name="configName"></param>
+        public LocalConfigurationAccessHelper(string configName)
         {
-            this.ConfigName = ConfigName.IsEmpty() ? typeof(TValue).Name : ConfigName;
+            this.ConfigName = configName.IsEmpty() ? typeof(TValue).Name : configName;
         }
 
         /// <summary>
         /// 配置文件路径
         /// </summary>
-        public string ConfigPath { get; set; }
+        private string ConfigPath { get; set; }
 
-        private string configName;
+        private string _configName;
 
         /// <summary>
         /// 配置文件名称
         /// </summary>
         public string ConfigName
         {
-            get { return configName; }
+            get => _configName;
             private set
             {
-                configName = value;
+                _configName = value;
                 ConfigPath = Path.GetFullPath(Path.Combine(".", "Config", $"{value}.config"));
             }
         }
@@ -60,16 +60,16 @@ namespace Idler.Common.Core.Config
         /// <summary>
         /// 替换配置文件
         /// </summary>
-        public void Replace(string Config)
+        public void Replace(string config)
         {
-            if (Config.IsEmpty())
+            if (config.IsEmpty())
                 return;
 
-            File.WriteAllText(this.ConfigPath, Config);
-            this.Load(Config);
+            File.WriteAllText(this.ConfigPath, config);
+            this.Load(config);
         }
 
-        private TValue _ConfigEntity;
+        private TValue _configEntity;
 
         /// <summary>
         /// 配置对象实体
@@ -78,12 +78,12 @@ namespace Idler.Common.Core.Config
         {
             get
             {
-                if (this._ConfigEntity == null)
+                if (this._configEntity == null)
                     this.Load();
 
-                return this._ConfigEntity;
+                return this._configEntity;
             }
-            protected set { this._ConfigEntity = value; }
+            private set => this._configEntity = value;
         }
 
         /// <summary>
@@ -92,17 +92,17 @@ namespace Idler.Common.Core.Config
         /// <returns></returns>
         public void Load()
         {
-            string ConfigStr = File.ReadAllText(this.ConfigPath);
-            this.Load(ConfigStr);
+            string config = File.ReadAllText(this.ConfigPath);
+            this.Load(config);
         }
 
         /// <summary>
         /// 加载配置文件
         /// </summary>
-        /// <param name="Config"></param>
-        private void Load(string Config)
+        /// <param name="config"></param>
+        private void Load(string config)
         {
-            this.ConfigEntity = new TValue().FromConfig(Config);
+            this.ConfigEntity = new TValue().FromConfig(config);
         }
 
         #endregion
