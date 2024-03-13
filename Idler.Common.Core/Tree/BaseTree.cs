@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Idler.Common.Core
+namespace Idler.Common.Core.Tree
 {
     public class BaseTree<TValue>
     {
@@ -8,10 +8,12 @@ namespace Idler.Common.Core
         {
         }
 
-        public BaseTree(string text, TValue data)
+        public BaseTree(string text, string value, TValue data, bool @checked = false)
         {
             this.Text = text;
             this.Data = data;
+            this.Value = value;
+            this.Checked = @checked;
         }
 
         /// <summary>
@@ -28,6 +30,11 @@ namespace Idler.Common.Core
         /// 数据
         /// </summary>
         public TValue Data { get; set; }
+
+        /// <summary>
+        /// 是否选中
+        /// </summary>
+        public bool Checked { get; set; }
 
         /// <summary>
         /// 子节点
