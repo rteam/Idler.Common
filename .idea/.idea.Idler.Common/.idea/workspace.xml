@@ -5,23 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e63355b7-66ed-4f90-87f4-d37d2e437878" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/Idler.Common.AutoMapper/AutoMapperExtensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Config/AutoBaseConfigTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Config/LocalConfigurationAccessHelperTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Extensions/Security/AESExtensionsTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Extensions/Security/SignatureExtensionsTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Extensions/Validation/GuidValidationTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Extensions/Validation/NumberValidationTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Extensions/Validation/StringValidationTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Extensions/Validation/ValidationTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Specification/AndSpecificationTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Specification/NotSpecificationTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Specification/OrSpecificationTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Values/APIReturnInfoTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Values/ComplexIdTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Values/ReturnPagingTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.FluentEmail/FluentEmailSender.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Authentication/IUserIdentifier.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Authentication/UserIdentifier.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Tree/HashTree.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Tree/ITreeData.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Tree/TreeExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Idler.Common/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Idler.Common/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.AutoMapper/Idler.Common.AutoMapper.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.AutoMapper/Idler.Common.AutoMapper.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Autofac/Idler.Common.Autofac.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Autofac/Idler.Common.Autofac.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Cache.FreeRedis/Idler.Common.Cache.FreeRedis.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Cache.FreeRedis/Idler.Common.Cache.FreeRedis.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Core.Test/Idler.Common.Core.Test.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Idler.Common.Core.Test.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Authentication/CoreClaimTypes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Authentication/CoreClaimTypes.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Config/LocalConfigurationAccessHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Config/LocalConfigurationAccessHelper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Idler.Common.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Idler.Common.Core.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Values/BaseCheckTree.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Values/BaseTree.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Tree/BaseTree.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/Idler.Common.EntityFrameworkCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/Idler.Common.EntityFrameworkCore.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/common.props" beforeDir="false" afterPath="$PROJECT_DIR$/common.props" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,8 +35,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d747a4f4636642189149dc94603e2a2b5600/ef/b6646ce5/ClaimsIdentity.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -53,27 +55,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "configurable.group.editor",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;9f14388f-0c97-4766-952d-7debc067b4c8.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.editor&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "/Users/gaoge/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache",
-      "/Users/gaoge/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache",
-      "/Users/gaoge/.local/share/Symbols/src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;/Users/gaoge/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache&quot;,
+      &quot;/Users/gaoge/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache&quot;,
+      &quot;/Users/gaoge/.local/share/Symbols/src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="默认任务">
@@ -83,7 +86,17 @@
       <option name="presentableId" value="Default" />
       <updated>1708875592470</updated>
       <workItem from="1708875593821" duration="1935000" />
-      <workItem from="1708877555794" duration="728000" />
+      <workItem from="1708877555794" duration="911000" />
+      <workItem from="1709017161837" duration="2152000" />
+      <workItem from="1709186357349" duration="7994000" />
+      <workItem from="1709603159609" duration="2471000" />
+      <workItem from="1709631518603" duration="1941000" />
+      <workItem from="1709690644666" duration="2901000" />
+      <workItem from="1709720749735" duration="1397000" />
+      <workItem from="1709862288062" duration="5886000" />
+      <workItem from="1709900921991" duration="279000" />
+      <workItem from="1709901216579" duration="3000" />
+      <workItem from="1710214501592" duration="739000" />
     </task>
     <servers />
   </component>
@@ -92,5 +105,46 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs</url>
+          <line>45</line>
+          <properties documentPath="$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs" initialLine="45" containingFunctionPresentation="方法 'TestBuildFirstLeveNullTree'">
+            <startOffsets>
+              <option value="1312" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1379" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs</url>
+          <line>55</line>
+          <properties documentPath="$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs" initialLine="56" containingFunctionPresentation="方法 'TestBuildFirstLeveNullTree'">
+            <startOffsets>
+              <option value="1813" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1857" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="RiderUnitTests">
+        <watch expression="data" />
+        <watch expression="lookup" />
+      </configuration>
+      <inline-watch fileUrl="file://$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs" line="34">
+        <watch expression="data" language="C#" />
+      </inline-watch>
+    </watches-manager>
   </component>
 </project>
