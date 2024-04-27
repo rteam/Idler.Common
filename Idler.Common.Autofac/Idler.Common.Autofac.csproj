@@ -5,12 +5,13 @@
         <PackageId>Idler.Common.Autofac</PackageId>
     </PropertyGroup>
 
+    
     <ItemGroup>
         <PackageReference Include="Autofac" Version="8.0.0"/>
         <PackageReference Include="Autofac.Configuration" Version="6.0.0" />
         <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
     </ItemGroup>
 </Project>
