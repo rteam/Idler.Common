@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../common.props" />
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <PackageId>Idler.Common.ExtendedAttribute</PackageId>
+        <RootNamespace>Idler.Common.ExtendedAttribute</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Idler.Common.Core\Idler.Common.Core.csproj" />
+    </ItemGroup>
+
+</Project>
