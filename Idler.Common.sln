@@ -19,6 +19,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idler.Common.FluentEmail", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idler.Common.Core.Test", "Idler.Common.Core.Test\Idler.Common.Core.Test.csproj", "{36417633-3D41-4F3E-8B18-AE39CD9EE502}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idler.Common.Authorization.Abstractions", "Idler.Common.Authorization.Abstractions\Idler.Common.Authorization.Abstractions.csproj", "{115B059F-36C1-4BD7-9183-30E5FDCB0AB2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idler.Common.Authorization", "Idler.Common.Authorization\Idler.Common.Authorization.csproj", "{1DA95D40-307C-4F2C-A526-035A3483B8FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idler.Common.Authorization.AspNetCore", "Idler.Common.Authorization.AspNetCore\Idler.Common.Authorization.AspNetCore.csproj", "{7AFD76A2-2FCB-4820-B993-37A02EEDC09E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idler.Common.Authorization.EntityFrameworkCore", "Idler.Common.Authorization.EntityFrameworkCore\Idler.Common.Authorization.EntityFrameworkCore.csproj", "{A22E985A-70FD-47B1-9F20-463AF2CF127D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authorization", "Authorization", "{13E222D9-D99C-4FF1-81E4-C79D3FB84EBC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,7 +67,27 @@ Global
 		{36417633-3D41-4F3E-8B18-AE39CD9EE502}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36417633-3D41-4F3E-8B18-AE39CD9EE502}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36417633-3D41-4F3E-8B18-AE39CD9EE502}.Release|Any CPU.Build.0 = Release|Any CPU
+		{115B059F-36C1-4BD7-9183-30E5FDCB0AB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{115B059F-36C1-4BD7-9183-30E5FDCB0AB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{115B059F-36C1-4BD7-9183-30E5FDCB0AB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{115B059F-36C1-4BD7-9183-30E5FDCB0AB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DA95D40-307C-4F2C-A526-035A3483B8FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DA95D40-307C-4F2C-A526-035A3483B8FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DA95D40-307C-4F2C-A526-035A3483B8FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DA95D40-307C-4F2C-A526-035A3483B8FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7AFD76A2-2FCB-4820-B993-37A02EEDC09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7AFD76A2-2FCB-4820-B993-37A02EEDC09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7AFD76A2-2FCB-4820-B993-37A02EEDC09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7AFD76A2-2FCB-4820-B993-37A02EEDC09E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A22E985A-70FD-47B1-9F20-463AF2CF127D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A22E985A-70FD-47B1-9F20-463AF2CF127D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A22E985A-70FD-47B1-9F20-463AF2CF127D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A22E985A-70FD-47B1-9F20-463AF2CF127D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{1DA95D40-307C-4F2C-A526-035A3483B8FA} = {13E222D9-D99C-4FF1-81E4-C79D3FB84EBC}
+		{115B059F-36C1-4BD7-9183-30E5FDCB0AB2} = {13E222D9-D99C-4FF1-81E4-C79D3FB84EBC}
+		{7AFD76A2-2FCB-4820-B993-37A02EEDC09E} = {13E222D9-D99C-4FF1-81E4-C79D3FB84EBC}
+		{A22E985A-70FD-47B1-9F20-463AF2CF127D} = {13E222D9-D99C-4FF1-81E4-C79D3FB84EBC}
 	EndGlobalSection
 EndGlobal

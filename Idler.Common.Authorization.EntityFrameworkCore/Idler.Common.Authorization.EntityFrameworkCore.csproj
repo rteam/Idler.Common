@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="../common.props" />
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <PackageId>Idler.Common.Authorization.EntityFrameworkCore</PackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Idler.Common.Authorization\Idler.Common.Authorization.csproj" />
+        <ProjectReference Include="..\Idler.Common.EntityFrameworkCore\Idler.Common.EntityFrameworkCore.csproj" />
+    </ItemGroup>
+
+
+</Project>
