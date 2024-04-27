@@ -48,7 +48,7 @@ namespace System.Text.Json
             if (json.IsEmpty())
                 return null;
 
-            return JsonSerializer.Deserialize(json, objectType);
+            return JsonSerializer.Deserialize(json, objectType, JsonDefaultOptions.Instance);
         }
     }
 }
