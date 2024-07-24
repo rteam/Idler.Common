@@ -12,6 +12,9 @@ namespace Idler.Common.Core.AspNetCore;
 /// </summary>
 public class MicroServiceAuthenticationFilter : IActionFilter
 {
+    /// <summary>
+    /// 认证服务类型
+    /// </summary>
     public const string AUTHENTICATION_TYPE = "MICRO_SERVICE";
     
     public void OnActionExecuted(ActionExecutedContext context)
