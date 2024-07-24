@@ -14,8 +14,4 @@
         <ProjectReference Include="..\Idler.Common.Authorization\Idler.Common.Authorization.csproj"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="WebApiClientCore" Version="2.0.4"/>
-    </ItemGroup>
-
 </Project>
