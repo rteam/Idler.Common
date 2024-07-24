@@ -15,6 +15,7 @@ namespace Idler.Common.EntityFrameworkCore
         }
 
         #region IUnitOfWork 成员
+
         /// <summary>
         /// 签入修改
         /// </summary>
@@ -33,7 +34,7 @@ namespace Idler.Common.EntityFrameworkCore
         /// <summary>
         /// 签入修改
         /// </summary>
-        public async void CommitAsync()
+        public async Task CommitAsync()
         {
             try
             {
@@ -44,7 +45,7 @@ namespace Idler.Common.EntityFrameworkCore
                 throw e;
             }
         }
-        
+
         /// <summary>
         /// 释放资源
         /// </summary>
@@ -52,9 +53,11 @@ namespace Idler.Common.EntityFrameworkCore
         {
             this.DataContext.Dispose();
         }
+
         #endregion
 
         private CoreDBContext dBContext;
+
         /// <summary>
         /// 数据上下文引用
         /// </summary>

@@ -5,23 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e63355b7-66ed-4f90-87f4-d37d2e437878" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Authentication/IUserIdentifier.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Authentication/UserIdentifier.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Tree/HashTree.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Tree/ITreeData.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/Tree/TreeExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.AspNetCore/ClaimsPrincipalAccessor.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.AspNetCore/MicroServiceAuthenticationFilter.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/ObjectMapperExtensionsTest.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.WebAPIClient/AppendUserFilterAttribute.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Idler.Common/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Idler.Common/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.AutoMapper/Idler.Common.AutoMapper.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.AutoMapper/Idler.Common.AutoMapper.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Autofac/Idler.Common.Autofac.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Autofac/Idler.Common.Autofac.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Authorization.AspNetCore/Idler.Common.Authorization.AspNetCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Authorization.AspNetCore/Idler.Common.Authorization.AspNetCore.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Idler.Common.Cache.FreeRedis/Idler.Common.Cache.FreeRedis.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Cache.FreeRedis/Idler.Common.Cache.FreeRedis.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Idler.Common.Core.Test/Idler.Common.Core.Test.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Idler.Common.Core.Test.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Authentication/CoreClaimTypes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Authentication/CoreClaimTypes.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Config/LocalConfigurationAccessHelper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Config/LocalConfigurationAccessHelper.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Idler.Common.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Idler.Common.Core.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Values/BaseCheckTree.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Values/BaseTree.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Tree/BaseTree.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/IUnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/IUnitOfWork.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Values/APIReturnInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Values/APIReturnInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/CoreDBContextExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/CoreDBContextExtensions.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/Idler.Common.EntityFrameworkCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/Idler.Common.EntityFrameworkCore.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/UnitOfWork.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/UnitOfWork.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/ExtendedAttributeDataExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/ExtendedAttributeDataExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/ExtendedAttributeSetting.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/ExtendedAttributeSetting.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/ExtendedAttributeSettingItem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/ExtendedAttributeSettingItem.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/ExtendedAttributeTypes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/ExtendedAttributeTypes.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/Idler.Common.ExtendedAttribute.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/Idler.Common.ExtendedAttribute.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Idler.Common.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.sln" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.sh" beforeDir="false" afterPath="$PROJECT_DIR$/build.sh" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common.props" beforeDir="false" afterPath="$PROJECT_DIR$/common.props" afterDir="false" />
@@ -35,10 +36,18 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/d747a4f4636642189149dc94603e2a2b5600/ef/b6646ce5/ClaimsIdentity.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/143836149403439da70c1af7f78fe4d115800/31/4a146b11/ClaimsPrincipal.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/143836149403439da70c1af7f78fe4d115800/d8/be16c6fa/ClaimsIdentity.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/33ca601a103348c391efa1ca049020e95600/a3/55ecb05d/ClaimsPrincipal.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9de0756ac7ce467bb97d56a1baed359d944a0/58/c12557fe/JsonIgnoreCondition.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3b1ca9ae4c42542ce48c7e78c36ad9b5cf71ebddb89c151a8eeeea532549/MapperConfigurationExpression.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/89594dfc791ceb4a1402253093ced85be5cc2e34d0b025473155745ffb1767/Assert.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="PerforceDirect.Settings">
+    <option name="CHARSET" value="无" />
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="Toolset" />
@@ -66,14 +75,14 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.editor&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
   &quot;keyToStringList&quot;: {
     &quot;rider.external.source.directories&quot;: [
-      &quot;/Users/gaoge/Library/Application Support/JetBrains/Rider2023.3/resharper-host/DecompilerCache&quot;,
-      &quot;/Users/gaoge/Library/Application Support/JetBrains/Rider2023.3/resharper-host/SourcesCache&quot;,
-      &quot;/Users/gaoge/.local/share/Symbols/src&quot;
+      &quot;/Users/gaoge/Library/Application Support/JetBrains/Rider2024.1/resharper-host/DecompilerCache&quot;,
+      &quot;/Users/gaoge/Library/Application Support/JetBrains/Rider2024.1/resharper-host/SourcesCache&quot;,
+      &quot;/Users/gaoge/Library/Application Support/Symbols/src&quot;
     ]
   }
 }</component>
@@ -97,12 +106,69 @@
       <workItem from="1709900921991" duration="279000" />
       <workItem from="1709901216579" duration="3000" />
       <workItem from="1710214501592" duration="739000" />
+      <workItem from="1710325091013" duration="2349000" />
+      <workItem from="1710385573906" duration="1164000" />
+      <workItem from="1711432725459" duration="9000" />
+      <workItem from="1711519639792" duration="159000" />
+      <workItem from="1711527975768" duration="1488000" />
+      <workItem from="1712497067464" duration="281000" />
+      <workItem from="1713151176051" duration="1200000" />
+      <workItem from="1713232777915" duration="4524000" />
+      <workItem from="1713251762843" duration="346000" />
+      <workItem from="1713261962318" duration="654000" />
+      <workItem from="1713335527116" duration="6665000" />
+      <workItem from="1713431545771" duration="4008000" />
+      <workItem from="1713864608274" duration="2300000" />
+      <workItem from="1713943329729" duration="2093000" />
+      <workItem from="1714040754064" duration="93000" />
+      <workItem from="1714094946938" duration="1227000" />
+      <workItem from="1714111469034" duration="115000" />
+      <workItem from="1714111592516" duration="7152000" />
+      <workItem from="1714125995199" duration="1289000" />
+      <workItem from="1714218892699" duration="3429000" />
+      <workItem from="1715051516127" duration="1561000" />
+      <workItem from="1715132784902" duration="2397000" />
+      <workItem from="1715148363591" duration="6390000" />
+      <workItem from="1715234107943" duration="9387000" />
+      <workItem from="1715249897611" duration="8838000" />
+      <workItem from="1715567576078" duration="1777000" />
+      <workItem from="1715585151716" duration="5925000" />
+      <workItem from="1715670075369" duration="621000" />
+      <workItem from="1715830658466" duration="633000" />
+      <workItem from="1715925986952" duration="18000" />
+      <workItem from="1715926025163" duration="44000" />
+      <workItem from="1715926324074" duration="3525000" />
+      <workItem from="1715937000864" duration="637000" />
+      <workItem from="1716369028835" duration="5526000" />
+      <workItem from="1717393815708" duration="2407000" />
+      <workItem from="1717665253743" duration="2350000" />
+      <workItem from="1718875531630" duration="1146000" />
+      <workItem from="1718964647403" duration="1209000" />
+      <workItem from="1719197031496" duration="29000" />
+      <workItem from="1719282400963" duration="3009000" />
+      <workItem from="1719479607417" duration="3343000" />
+      <workItem from="1719814675396" duration="3095000" />
+      <workItem from="1719898811166" duration="1761000" />
+      <workItem from="1719917417726" duration="2597000" />
+      <workItem from="1720764676265" duration="677000" />
+      <workItem from="1721615962078" duration="803000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="UnitTestsCoverage.Settings">
+    <option name="coveragePercentColumnWidth" value="109" />
+    <option name="sortOrder" value="DESCENDING" />
+    <option name="sortedColumn" value="1" />
+    <option name="symbolColumnWidth" value="265" />
+    <coverage-tree-state>
+      <expand />
+      <select />
+    </coverage-tree-state>
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
   <component name="VcsManagerConfiguration">
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
   </component>
@@ -112,7 +178,7 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs</url>
           <line>45</line>
-          <properties documentPath="$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs" initialLine="45" containingFunctionPresentation="方法 'TestBuildFirstLeveNullTree'">
+          <properties documentPath="$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs" containingFunctionPresentation="方法 'TestBuildFirstLeveNullTree'">
             <startOffsets>
               <option value="1312" />
             </startOffsets>
@@ -125,7 +191,7 @@
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs</url>
           <line>55</line>
-          <properties documentPath="$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs" initialLine="56" containingFunctionPresentation="方法 'TestBuildFirstLeveNullTree'">
+          <properties documentPath="$PROJECT_DIR$/Idler.Common.Core.Test/Tree/TreeExtensionsTest.cs" containingFunctionPresentation="方法 'TestBuildFirstLeveNullTree'">
             <startOffsets>
               <option value="1813" />
             </startOffsets>

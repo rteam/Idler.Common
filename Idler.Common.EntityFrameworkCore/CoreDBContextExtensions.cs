@@ -48,7 +48,7 @@ namespace Idler.Common.EntityFrameworkCore
             if (entityInfo.Entity is IHasDeleteTime)
                 entityInfo.Entity.As<IHasDeleteTime>().DeleteTime = DateTime.Now;
 
-            if (!(entityInfo is IHasDeleteUser))
+            if (!(entityInfo.Entity is IHasDeleteUser))
                 return entityInfo;
 
             entityInfo.Entity.As<IHasDeleteUser>().DeleteUser = coreSession.GetUserNameOrGuest();
@@ -66,7 +66,7 @@ namespace Idler.Common.EntityFrameworkCore
             if (entityInfo.Entity is IHasCreateTime)
                 entityInfo.Entity.As<IHasCreateTime>().CreateTime = DateTime.Now;
 
-            if (!(entityInfo is IHasCreateUser))
+            if (!(entityInfo.Entity is IHasCreateUser))
                 return entityInfo;
 
             entityInfo.Entity.As<IHasCreateUser>().CreateUser = coreSession.GetUserNameOrGuest();
@@ -85,7 +85,7 @@ namespace Idler.Common.EntityFrameworkCore
             if (entityInfo.Entity is IHasModifyTime)
                 entityInfo.Entity.As<IHasModifyTime>().ModifyTime = DateTime.Now;
 
-            if (!(entityInfo is IHasModifyUser))
+            if (!(entityInfo.Entity is IHasModifyUser))
                 return entityInfo;
 
             entityInfo.Entity.As<IHasModifyUser>().ModifyUser = coreSession.GetUserNameOrGuest();

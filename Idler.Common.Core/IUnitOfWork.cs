@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Idler.Common.Core
 {
@@ -12,6 +13,6 @@ namespace Idler.Common.Core
         /// <summary>
         /// 签入
         /// </summary>
-        void CommitAsync();
+        Task CommitAsync();
     }
 }

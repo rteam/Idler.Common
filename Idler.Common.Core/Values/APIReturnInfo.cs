@@ -3,6 +3,10 @@ using System.Linq;
 
 namespace Idler.Common.Core
 {
+    /// <summary>
+    /// 标准返回体
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class APIReturnInfo<T>
     {
 
