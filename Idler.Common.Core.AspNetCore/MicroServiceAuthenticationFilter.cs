@@ -18,6 +18,10 @@ public class MicroServiceAuthenticationFilter : IActionFilter
     {
     }
 
+    /// <summary>
+    /// 处理Header中附加的用户信息
+    /// </summary>
+    /// <param name="context"></param>
     public void OnActionExecuting(ActionExecutingContext context)
     {
         string UserName = CoreAuthenticationConst.USER_GUEST;
