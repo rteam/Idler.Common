@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace Idler.Common.ExtendedAttribute
 {
+    /// <summary>
+    /// 扩展属性设置
+    /// </summary>
     public class ExtendedAttributeSetting : IValidatableObject
     {
         #region 属性
