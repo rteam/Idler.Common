@@ -396,3 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+Idler.Common.OSS.Test/Config/OSSSetting.json

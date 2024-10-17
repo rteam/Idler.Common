@@ -1,7 +1,7 @@
 <Project>
     <PropertyGroup>
         <LangVersion>latest</LangVersion>
-        <Version>0.1.7.2</Version>
+        <Version>0.1.8.0</Version>
         <PackageProjectUrl>https://space.bilibili.com/12002462/</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryType>git</RepositoryType>

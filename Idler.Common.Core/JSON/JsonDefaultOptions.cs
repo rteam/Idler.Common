@@ -2,6 +2,7 @@ using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
+// ReSharper disable once CheckNamespace
 namespace System.Text.Json
 {
     public static class JsonDefaultOptions
@@ -9,7 +10,7 @@ namespace System.Text.Json
         /// <summary>
         /// 默认选项
         /// </summary>
-        public readonly static JsonSerializerOptions Instance;
+        public static readonly JsonSerializerOptions Instance;
 
         static JsonDefaultOptions()
         {

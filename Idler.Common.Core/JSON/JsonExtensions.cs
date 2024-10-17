@@ -14,12 +14,12 @@ namespace System.Text.Json
         /// </summary>
         /// <param name="objectData">对象</param>
         /// <returns></returns>
-        public static string ToJSON(this object objectData)
+        public static string ToJSON(this object objectData, JsonSerializerOptions option = null)
         {
             if (objectData == null)
                 return string.Empty;
 
-            return JsonSerializer.Serialize(objectData, JsonDefaultOptions.Instance);
+            return JsonSerializer.Serialize(objectData, option ?? JsonDefaultOptions.Instance);
         }
 
         /// <summary>
@@ -28,13 +28,13 @@ namespace System.Text.Json
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="json">Json字符串</param>
         /// <returns></returns>
-        public static T FromJson<T>(this string json)
+        public static T FromJson<T>(this string json, JsonSerializerOptions option = null)
 
         {
             if (json.IsEmpty())
                 return default(T);
 
-            return JsonSerializer.Deserialize<T>(json, JsonDefaultOptions.Instance);
+            return JsonSerializer.Deserialize<T>(json, option ?? JsonDefaultOptions.Instance);
         }
 
         /// <summary>
@@ -43,12 +43,12 @@ namespace System.Text.Json
         /// <param name="json">Json字符串</param>
         /// <param name="objectType">对象类型</param>
         /// <returns></returns>
-        public static object FromJson(this string json, Type objectType)
+        public static object FromJson(this string json, Type objectType, JsonSerializerOptions option = null)
         {
             if (json.IsEmpty())
                 return null;
 
-            return JsonSerializer.Deserialize(json, objectType, JsonDefaultOptions.Instance);
+            return JsonSerializer.Deserialize(json, objectType, option ?? JsonDefaultOptions.Instance);
         }
     }
 }
