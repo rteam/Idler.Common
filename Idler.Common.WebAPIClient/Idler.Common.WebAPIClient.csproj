@@ -9,8 +9,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Idler.Common.Core" Version="0.1.7.1" />
       <PackageReference Include="WebApiClientCore" Version="2.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Idler.Common.Core\Idler.Common.Core.csproj" />
     </ItemGroup>
 
 </Project>

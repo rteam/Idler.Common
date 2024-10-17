@@ -8,6 +8,11 @@ namespace Idler.Common.Core.Upload;
 public class UploadFilInfo
 {
     public UploadFilInfo(string rootPath, string fileName, long fileSize, string uploadType)
+        : this(rootPath, fileName, fileSize, uploadType, Guid.NewGuid())
+    {
+    }
+
+    public UploadFilInfo(string rootPath, string fileName, long fileSize, string uploadType, Guid id)
     {
         fileName.ThrowIfNull(nameof(fileName));
 
@@ -15,10 +20,14 @@ public class UploadFilInfo
         this.FileSize = fileSize;
         this.RootPath = rootPath;
         this.UploadType = uploadType;
-
+        this.Id = id;
         this.FileExt = this.GetFileExt(this.FileName);
         this.SavePath = $"{this.RootPath}{DateTime.Now:yyyy/MM/dd/}";
         this.SaveFileName = this.GetUniqueFileName(this.FileExt);
+    }
+
+    public UploadFilInfo()
+    {
     }
 
     /// <summary>
@@ -60,6 +69,11 @@ public class UploadFilInfo
     /// RootUrl
     /// </summary>
     public string RootUrl { get; set; }
+
+    /// <summary>
+    /// 文件唯一标识符
+    /// </summary>
+    public Guid Id { get; set; }
 
     /// <summary>
     /// 获取文件名中的扩展名

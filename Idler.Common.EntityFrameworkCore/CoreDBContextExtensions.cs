@@ -14,6 +14,107 @@ namespace Idler.Common.EntityFrameworkCore
         /// <summary>
         /// 应用本框架的特性
         /// </summary>
+        public static DbContext ApplyBCDBContextAuditingOffset(this DbContext context, ICoreSession coreSession)
+        {
+            var entries = context.ChangeTracker.Entries().ToList();
+            foreach (var entityItem in entries)
+            {
+                switch (entityItem.State)
+                {
+                    case EntityState.Deleted:
+                        entityItem.CancelDeleteForSoftDeleteOffset(coreSession);
+                        break;
+                    case EntityState.Added:
+                        entityItem
+                            .ApplyCreateAuditOffset(coreSession);
+                        break;
+                    case EntityState.Modified:
+                        entityItem.ApplyModifyAuditOffset(coreSession);
+                        break;
+                }
+            }
+
+            return context;
+        }
+        
+        /// <summary>
+        /// 应用删除审计
+        /// </summary>
+        /// <param name="entityInfo">对象</param>
+        /// <param name="coreSession">Session</param>
+        /// <returns></returns>
+        public static EntityEntry ApplyDeleteAuditOffset(this EntityEntry entityInfo, ICoreSession coreSession)
+        {
+            if (entityInfo.Entity is IHasDeleteTimeOffset)
+                entityInfo.Entity.As<IHasDeleteTimeOffset>().DeleteTime = DateTime.Now;
+
+            if (!(entityInfo.Entity is IHasDeleteUser))
+                return entityInfo;
+
+            entityInfo.Entity.As<IHasDeleteUser>().DeleteUser = coreSession.GetUserNameOrGuest();
+            return entityInfo;
+        }
+
+        /// <summary>
+        /// 应用创建审计
+        /// </summary>
+        /// <param name="entityInfo">对象</param>
+        /// <param name="coreSession">Session</param>
+        /// <returns></returns>
+        public static EntityEntry ApplyCreateAuditOffset(this EntityEntry entityInfo, ICoreSession coreSession)
+        {
+            if (entityInfo.Entity is IHasCreateTimeOffset)
+                entityInfo.Entity.As<IHasCreateTimeOffset>().CreateTime = DateTime.Now;
+
+            if (!(entityInfo.Entity is IHasCreateUser))
+                return entityInfo;
+
+            entityInfo.Entity.As<IHasCreateUser>().CreateUser = coreSession.GetUserNameOrGuest();
+
+            return entityInfo;
+        }
+
+        /// <summary>
+        /// 应用修改审计
+        /// </summary>
+        /// <param name="entityInfo">对象</param>
+        /// <param name="coreSession">Session</param>
+        /// <returns></returns>
+        public static EntityEntry ApplyModifyAuditOffset(this EntityEntry entityInfo, ICoreSession coreSession)
+        {
+            if (entityInfo.Entity is IHasModifyTimeOffset)
+                entityInfo.Entity.As<IHasModifyTimeOffset>().ModifyTime = DateTime.Now;
+
+            if (!(entityInfo.Entity is IHasModifyUser))
+                return entityInfo;
+
+            entityInfo.Entity.As<IHasModifyUser>().ModifyUser = coreSession.GetUserNameOrGuest();
+
+            return entityInfo;
+        }
+
+        /// <summary>
+        /// 应用软删除
+        /// </summary>
+        /// <param name="entityInfo">对象</param>
+        /// <param name="coreSession">Session</param>
+        public static EntityEntry CancelDeleteForSoftDeleteOffset(this EntityEntry entityInfo, ICoreSession coreSession)
+        {
+            if (!(entityInfo.Entity is ISoftDelete))
+                return entityInfo;
+
+            entityInfo.Reload();
+            entityInfo.State = EntityState.Modified;
+            entityInfo.Entity.As<ISoftDelete>().IsDelete = true;
+            entityInfo.ApplyDeleteAuditOffset(coreSession);
+
+            return entityInfo;
+        }
+
+
+        /// <summary>
+        /// 应用本框架的特性
+        /// </summary>
         public static DbContext ApplyBCDBContextSpecial(this DbContext context, ICoreSession coreSession)
         {
             var entries = context.ChangeTracker.Entries().ToList();
@@ -110,7 +211,5 @@ namespace Idler.Common.EntityFrameworkCore
 
             return entityInfo;
         }
-
-
     }
 }
