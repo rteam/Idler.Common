@@ -1,16 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <LangVersion>latest</LangVersion>
-        <Version>0.1.7.5</Version>
-        <PackageProjectUrl>https://space.bilibili.com/12002462/</PackageProjectUrl>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/rteam/idler.common/</RepositoryUrl>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Authors>rteam</Authors>
-        <Product>Idler.Common</Product>
-    </PropertyGroup>
+    <Import Project="../common.props" />
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>

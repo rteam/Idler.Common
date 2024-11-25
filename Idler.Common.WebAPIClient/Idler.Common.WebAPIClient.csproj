@@ -9,7 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="WebApiClientCore" Version="2.0.7" />
+      <PackageReference Include="WebApiClientCore" Version="2.1.4" />
     </ItemGroup>
 
     <ItemGroup>

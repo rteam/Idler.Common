@@ -22,12 +22,12 @@ namespace Idler.Common.EntityFrameworkCore
         /// </summary>
         public virtual bool IsSoftDeleteFilterEnabled { get; set; } = true;
 
+        private readonly IServiceProvider serviceProvider;
         public CoreDBContext()
         {
-
         }
         
-        public CoreDBContext(DbContextOptions options) : base(options)
+        public CoreDBContext(DbContextOptions options,IServiceProvider serviceProvider) : base(options)
         {
 
         }
@@ -48,6 +48,7 @@ namespace Idler.Common.EntityFrameworkCore
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            
             if (modelBuilder == null)
             {
                 throw new ArgumentNullException("modelBuilder");
