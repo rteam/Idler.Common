@@ -2,7 +2,7 @@
 using Idler.Common.Core.Config;
 using Idler.Common.Core.Upload;
 
-namespace Idler.Common.OBS
+namespace Idler.Common.Attachments
 {
     public class MultipartUploadTaskValue : AutoBaseConfig<MultipartUploadTaskValue>
     {
@@ -25,8 +25,6 @@ namespace Idler.Common.OBS
             this.TotalPart = (int)Math.Floor((decimal)this.FileSize / (decimal)partSize);
             if (this.TotalPart * partSize < this.FileSize)
                 this.TotalPart++;
-
-
         }
         /// <summary>
         /// 依赖Id

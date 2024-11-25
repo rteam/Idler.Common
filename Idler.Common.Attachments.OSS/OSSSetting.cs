@@ -1,4 +1,4 @@
-﻿namespace Idler.Common.OSS
+﻿namespace Idler.Common.Attachments.OSS
 {
     public class OSSSetting
     {

@@ -6,14 +6,15 @@ using Idler.Common.Attachments;
 using Idler.Common.Core;
 using Idler.Common.Core.Config;
 using Idler.Common.Core.Upload;
-using Idler.Common.OBS;
+using Idler.Common.Attachments.OBS;
+using Idler.Common.Attachments.OSS;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Idler.Common.OSS.Test;
+namespace Idler.Common.Attachments.OSS.Test;
 
 [TestClass]
 [TestSubject(typeof(OBSAttachmentDomainService))]
@@ -23,13 +24,13 @@ public class OBSAttachmentDomainServiceTest
     {
         var attachmentRepositoryMock = new Mock<IRepository<Attachment, Guid>>();
         var loggerMock = new Mock<ILogger<OSSAttachmentDomainService>>();
-        var uploadConfigAccessHelperMock = new Mock<IConfigAccessHelper<UploadConfig>>();
+        var uploadConfigAccessHelperMock = new Mock<IOptions<UploadConfig>>();
         var unitOfWorkMock = new Mock<IUnitOfWork>();
         Guid id = Guid.NewGuid();
 
         attachmentRepositoryMock.Setup(t => t.Add(new Attachment() { Id = id })).Returns(new Attachment() { Id = id });
 
-        uploadConfigAccessHelperMock.Setup(o => o.ConfigEntity).Returns(new UploadConfig()
+        uploadConfigAccessHelperMock.Setup(o => o.Value).Returns(new UploadConfig()
         {
             Items = new Dictionary<string, UploadConfigItem>()
             {
@@ -50,17 +51,16 @@ public class OBSAttachmentDomainServiceTest
             }
         });
         var ossSettingMock = new Mock<IOptions<OSSSetting>>();
-        using (var steam = File.OpenText("Config/OSSSetting.json"))
-        {
-            ossSettingMock.Setup(o => o.Value).Returns(steam.ReadToEnd().FromJson<OSSSetting>());
 
-            return new OSSAttachmentDomainService(
-                attachmentRepositoryMock.Object,
-                loggerMock.Object,
-                uploadConfigAccessHelperMock.Object,
-                ossSettingMock.Object,
-                unitOfWorkMock.Object);
-        }
+        string setting = File.ReadAllText("Config/OSSSetting.json");
+        ossSettingMock.Setup(o => o.Value).Returns(setting.FromJson<OSSSetting>());
+
+        return new OSSAttachmentDomainService(
+            attachmentRepositoryMock.Object,
+            loggerMock.Object,
+            uploadConfigAccessHelperMock.Object,
+            ossSettingMock.Object,
+            unitOfWorkMock.Object);
     });
 
     private IAttachmentDomainService Service => LazyService.Value;

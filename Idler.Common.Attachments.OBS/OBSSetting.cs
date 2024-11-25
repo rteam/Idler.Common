@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Idler.Common.Core.Config;
 
-namespace Idler.Common.OBS
+namespace Idler.Common.Attachments.OBS
 {
     public class OBSSetting
     {

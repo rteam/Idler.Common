@@ -5,47 +5,43 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Security.Cryptography;
-using BCCore.DDD.Attachments;
 using Idler.Common.Attachments;
 using Idler.Common.Core;
 using Idler.Common.Core.Config;
 using Idler.Common.Core.Logging;
 using Idler.Common.Core.Upload;
-using log4net;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using OBS;
 using OBS.Model;
 
-namespace Idler.Common.OBS
+namespace Idler.Common.Attachments.OBS
 {
     public class OBSAttachmentDomainService(
-        IRepository<Attachment, Guid> AttachmentRepository,
+        IRepository<Attachment, Guid> attachmentRepository,
         ILogger<OBSAttachmentDomainService> logger,
-        IConfigAccessHelper<UploadConfig> uploadConfigAccessHelper,
+        IOptions<UploadConfig> uploadConfigAccessHelper,
         IOptions<OBSSetting> obsConfigAccessHelper,
         IUnitOfWork unitOfWork)
-        : BaseAttachmentDomainService(AttachmentRepository, uploadConfigAccessHelper, unitOfWork)
+        : BaseAttachmentDomainService(attachmentRepository, uploadConfigAccessHelper, unitOfWork)
     {
-
-
         /// <summary>
         /// 从服务器删除附件
         /// </summary>
-        /// <param name="UploadType">附件类型</param>
-        /// <param name="DependentId">依赖Id</param>
+        /// <param name="uploadType">附件类型</param>
+        /// <param name="dependentId">依赖Id</param>
         /// <returns></returns>
-        public override APIReturnInfo<string> RemoveFromServer(string UploadType, string DependentId)
+        public override APIReturnInfo<string> RemoveFromServer(string uploadType, string dependentId)
         {
-            if (UploadType.IsEmpty())
-                throw new ArgumentNullException(nameof(UploadType));
+            if (uploadType.IsEmpty())
+                throw new ArgumentNullException(nameof(uploadType));
 
-            if (DependentId.IsEmpty())
-                throw new ArgumentNullException(nameof(DependentId));
+            if (dependentId.IsEmpty())
+                throw new ArgumentNullException(nameof(dependentId));
 
-            IList<string> FullPaths = this.AttachmentRepository
-                .Find(t => t.UploadType == UploadType && t.DependentId == DependentId).Select(t => t.FullPath).ToList();
-            if (FullPaths.Count == 0)
+            IList<string> fullPaths = attachmentRepository
+                .Find(t => t.UploadType == uploadType && t.DependentId == dependentId).Select(t => t.FullPath).ToList();
+            if (fullPaths.Count == 0)
                 return APIReturnInfo<string>.Success("ok");
 
             ObsClient client = new ObsClient(obsConfigAccessHelper.Value.AccessKey,
@@ -55,7 +51,7 @@ namespace Idler.Common.OBS
                 DeleteObjectsRequest request = new DeleteObjectsRequest();
                 request.BucketName = obsConfigAccessHelper.Value.BucketName;
                 request.Quiet = true;
-                FullPaths.ForEach(t => request.AddKey(t));
+                fullPaths.ForEach(t => request.AddKey(t));
                 DeleteObjectsResponse response = client.DeleteObjects(request);
                 if (response.DeleteErrors.Count == 0)
                     return APIReturnInfo<string>.Success("ok");
@@ -73,15 +69,15 @@ namespace Idler.Common.OBS
         /// <summary>
         /// 从服务器删除指定附件
         /// </summary>
-        /// <param name="RemoveId">要删除的附件Id</param>
+        /// <param name="removeId">要删除的附件Id</param>
         /// <returns></returns>
-        public override APIReturnInfo<string> RemoveFromServer(Guid RemoveId)
+        public override APIReturnInfo<string> RemoveFromServer(Guid removeId)
         {
-            if (RemoveId.IsEmpty())
-                throw new ArgumentNullException(nameof(RemoveId));
+            if (removeId.IsEmpty())
+                throw new ArgumentNullException(nameof(removeId));
 
-            Attachment AttachmentInfo = this.AttachmentRepository.Single(RemoveId);
-            if (AttachmentInfo == null)
+            Attachment attachmentInfo = attachmentRepository.Single(removeId);
+            if (attachmentInfo == null)
                 return APIReturnInfo<string>.Error("福建不存在");
 
             ObsClient client = new ObsClient(obsConfigAccessHelper.Value.AccessKey,
@@ -91,7 +87,7 @@ namespace Idler.Common.OBS
                 DeleteObjectRequest request = new DeleteObjectRequest()
                 {
                     BucketName = obsConfigAccessHelper.Value.BucketName,
-                    ObjectKey = AttachmentInfo.FullPath,
+                    ObjectKey = attachmentInfo.FullPath,
                 };
                 DeleteObjectResponse response = client.DeleteObject(request);
 
@@ -110,12 +106,12 @@ namespace Idler.Common.OBS
         /// <summary>
         /// 生成上传指定文件的授权地址
         /// </summary>
-        /// <param name="ObjectKey">ObjectKey</param>
+        /// <param name="objectKey">ObjectKey</param>
         /// <returns></returns>
-        public override APIReturnInfo<string> GenerateUploadAuthorizationUrl(string ObjectKey)
+        public override APIReturnInfo<string> GenerateUploadAuthorizationUrl(string objectKey)
         {
-            if (ObjectKey.IsEmpty())
-                throw new ArgumentNullException(nameof(ObjectKey));
+            if (objectKey.IsEmpty())
+                throw new ArgumentNullException(nameof(objectKey));
 
             try
             {
@@ -123,7 +119,7 @@ namespace Idler.Common.OBS
                     obsConfigAccessHelper.Value.SecretKey, obsConfigAccessHelper.Value.EndPoint);
                 CreateTemporarySignatureRequest request = new CreateTemporarySignatureRequest();
                 request.BucketName = obsConfigAccessHelper.Value.BucketName;
-                request.ObjectKey = ObjectKey;
+                request.ObjectKey = objectKey;
                 request.Method = HttpVerb.PUT;
                 request.Expires = 60 * 60;
 
@@ -140,19 +136,19 @@ namespace Idler.Common.OBS
         /// <summary>
         /// 上传文件
         /// </summary>
-        /// <param name="UploadType">上传类型</param>
-        /// <param name="DependentId">依赖Id</param>
-        /// <param name="FileName">文件名</param>
-        /// <param name="FileSize">文件大小</param>
+        /// <param name="uploadType">上传类型</param>
+        /// <param name="dependentId">依赖Id</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="fileSize">文件大小</param>
         /// <param name="fileStream">文件流</param>
         /// <returns></returns>
-        public override APIReturnInfo<UploadFilInfo> Upload(string UploadType, string DependentId, string FileName,
-            long FileSize, Stream fileStream)
+        public override APIReturnInfo<UploadFilInfo> Upload(string uploadType, string dependentId, string fileName,
+            long fileSize, Stream fileStream)
         {
-            UploadFilInfo FileInfo = new UploadFilInfo(string.Concat(UploadType, "/"), FileName, FileSize, UploadType);
+            UploadFilInfo fileInfo = new UploadFilInfo(string.Concat(uploadType, "/"), fileName, fileSize, uploadType);
 
             APIReturnInfo<UploadConfigItem> rinfo =
-                this.Config().Verify(UploadType, FileInfo.FileExt, FileInfo.FileSize);
+                this.Config().Verify(uploadType, fileInfo.FileExt, fileInfo.FileSize);
             if (!rinfo.State)
                 return APIReturnInfo<UploadFilInfo>.Error(rinfo.Message);
 
@@ -164,7 +160,7 @@ namespace Idler.Common.OBS
                 PutObjectRequest request = new PutObjectRequest()
                 {
                     BucketName = obsConfigAccessHelper.Value.BucketName,
-                    ObjectKey = $"{FileInfo.SavePath}{FileInfo.SaveFileName}",
+                    ObjectKey = $"{fileInfo.SavePath}{fileInfo.SaveFileName}",
                     InputStream = fileStream,
                 };
 
@@ -172,27 +168,27 @@ namespace Idler.Common.OBS
                 if (response.StatusCode != HttpStatusCode.OK)
                     return APIReturnInfo<UploadFilInfo>.Error("上传失败");
 
-                Attachment AttachmentInfo = this.AttachmentRepository.Add(new Attachment()
+                Attachment attachmentInfo = attachmentRepository.Add(new Attachment()
                 {
-                    DependentId = DependentId,
-                    FileExt = FileInfo.FileExt,
-                    FileSize = FileInfo.FileSize,
-                    UploadType = UploadType,
-                    FilePath = FileInfo.SavePath,
-                    Name = FileInfo.FileName,
-                    FileName = FileInfo.SaveFileName,
-                    FullPath = $"{FileInfo.SavePath}{FileInfo.SaveFileName}",
+                    DependentId = dependentId,
+                    FileExt = fileInfo.FileExt,
+                    FileSize = fileInfo.FileSize,
+                    UploadType = uploadType,
+                    FilePath = fileInfo.SavePath,
+                    Name = fileInfo.FileName,
+                    FileName = fileInfo.SaveFileName,
+                    FullPath = $"{fileInfo.SavePath}{fileInfo.SaveFileName}",
                     SyncState = true,
                     RelativelyUrl =
-                        $"{obsConfigAccessHelper.Value.RootUrl}/{FileInfo.SavePath}{FileInfo.SaveFileName}"
+                        $"{obsConfigAccessHelper.Value.RootUrl}/{fileInfo.SavePath}{fileInfo.SaveFileName}"
                 });
 
                 this.SaveChange();
 
                 //   public UploadFilInfo(string rootPath, string fileName, long fileSize, string uploadType, Guid id)
 
-                return APIReturnInfo<UploadFilInfo>.Success(new UploadFilInfo(FileInfo.RootPath,
-                    FileInfo.FileName, FileInfo.FileSize, UploadType, AttachmentInfo.Id));
+                return APIReturnInfo<UploadFilInfo>.Success(new UploadFilInfo(fileInfo.RootPath,
+                    fileInfo.FileName, fileInfo.FileSize, uploadType, attachmentInfo.Id));
             }
             catch (ObsException e)
             {
@@ -204,28 +200,28 @@ namespace Idler.Common.OBS
         /// <summary>
         /// 初始化大文件上传任务
         /// </summary>
-        /// <param name="UploadType">上传类型</param>
-        /// <param name="DependentId">依赖Id</param>
-        /// <param name="FileName">文件名</param>
-        /// <param name="PartSize">分片大小</param>
-        /// <param name="FileSize">文件大小</param>
+        /// <param name="uploadType">上传类型</param>
+        /// <param name="dependentId">依赖Id</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="partSize">分片大小</param>
+        /// <param name="fileSize">文件大小</param>
         /// <returns></returns>
-        public override APIReturnInfo<string> InitializeLargeFileUploadTask(string UploadType, string DependentId,
-            string FileName, long PartSize, long FileSize)
+        public override APIReturnInfo<string> InitializeLargeFileUploadTask(string uploadType, string dependentId,
+            string fileName, long partSize, long fileSize)
         {
-            if (UploadType.IsEmpty())
-                throw new ArgumentNullException(nameof(UploadType));
+            if (uploadType.IsEmpty())
+                throw new ArgumentNullException(nameof(uploadType));
 
-            if (DependentId.IsEmpty())
-                throw new ArgumentNullException(nameof(DependentId));
+            if (dependentId.IsEmpty())
+                throw new ArgumentNullException(nameof(dependentId));
 
-            if (FileName.IsEmpty())
-                throw new ArgumentNullException(nameof(FileName));
+            if (fileName.IsEmpty())
+                throw new ArgumentNullException(nameof(fileName));
 
-            UploadFilInfo FileInfo = new UploadFilInfo(string.Concat(UploadType, "/"), FileName, FileSize, UploadType);
+            UploadFilInfo fileInfo = new UploadFilInfo(string.Concat(uploadType, "/"), fileName, fileSize, uploadType);
 
             APIReturnInfo<UploadConfigItem> rinfo =
-                this.Config().Verify(UploadType, FileInfo.FileExt, FileInfo.FileSize);
+                this.Config().Verify(uploadType, fileInfo.FileExt, fileInfo.FileSize);
             if (!rinfo.State)
                 return APIReturnInfo<string>.Error(rinfo.Message);
 
@@ -237,7 +233,7 @@ namespace Idler.Common.OBS
                 InitiateMultipartUploadRequest request = new InitiateMultipartUploadRequest()
                 {
                     BucketName = obsConfigAccessHelper.Value.BucketName,
-                    ObjectKey = $"{FileInfo.SavePath}{FileInfo.SaveFileName}"
+                    ObjectKey = $"{fileInfo.SavePath}{fileInfo.SaveFileName}"
                 };
 
                 InitiateMultipartUploadResponse response = client.InitiateMultipartUpload(request);
@@ -245,7 +241,7 @@ namespace Idler.Common.OBS
                     return APIReturnInfo<string>.Error("上传失败");
 
                 string taskKeyConfig =
-                    new MultipartUploadTaskValue(response.UploadId, UploadType, DependentId, PartSize, FileInfo)
+                    new MultipartUploadTaskValue(response.UploadId, uploadType, dependentId, partSize, fileInfo)
                         .ToConfig();
 
                 return new APIReturnInfo<string>()
@@ -263,23 +259,23 @@ namespace Idler.Common.OBS
         /// <summary>
         /// 分片上传
         /// </summary>
-        /// <param name="TaskId">任务Id</param>
+        /// <param name="taskId">任务Id</param>
         /// <param name="PartNumber">分片编号</param>
         /// <param name="Total">总数</param>
         /// <param name="fileStream">待上传文件流</param>
         /// <returns></returns>
-        public override APIReturnInfo<MultipartUploadResultValue> Upload(string TaskId, Stream fileStream)
+        public override APIReturnInfo<MultipartUploadResultValue> Upload(string taskId, Stream fileStream)
         {
-            if (TaskId.IsEmpty())
-                throw new ArgumentNullException(nameof(TaskId));
+            if (taskId.IsEmpty())
+                throw new ArgumentNullException(nameof(taskId));
 
             try
             {
-                string Config = TaskId.AESDecrypt(obsConfigAccessHelper.Value.SecretKey);
-                if (Config == "err")
+                string config = taskId.AESDecrypt(obsConfigAccessHelper.Value.SecretKey);
+                if (config == "err")
                     return APIReturnInfo<MultipartUploadResultValue>.Error("任务不存在");
 
-                MultipartUploadTaskValue taskInfo = new MultipartUploadTaskValue().FromConfig(Config);
+                MultipartUploadTaskValue taskInfo = new MultipartUploadTaskValue().FromConfig(config);
                 if (taskInfo.CurrentPart > taskInfo.TotalPart)
                     return APIReturnInfo<MultipartUploadResultValue>.Error("已上传至文件末尾请不要重复上传分片");
 
@@ -353,7 +349,7 @@ namespace Idler.Common.OBS
                     return APIReturnInfo<MultipartUploadResultValue>.Error("上传失败");
                 }
 
-                Attachment AttachmentInfo = this.AttachmentRepository.Add(new Attachment()
+                Attachment attachmentInfo = attachmentRepository.Add(new Attachment()
                 {
                     DependentId = taskInfo.DependentId,
                     FileExt = taskInfo.FileExt,
@@ -371,7 +367,7 @@ namespace Idler.Common.OBS
 
                 return APIReturnInfo<MultipartUploadResultValue>.Success(new MultipartUploadResultValue(taskInfo.TaskId,
                     taskInfo.TotalPart, taskInfo.CurrentPart, taskInfo.SavePath, taskInfo.FileName,
-                    taskInfo.FileSize, taskInfo.UploadType, AttachmentInfo.Id));
+                    taskInfo.FileSize, taskInfo.UploadType, attachmentInfo.Id));
             }
             catch (ObsException ex)
             {
@@ -383,20 +379,20 @@ namespace Idler.Common.OBS
         /// <summary>
         /// 取消分片上传
         /// </summary>
-        private void CancelMultipartUpload(ObsClient client, string BucketName, string ObjectKey, string UploadId)
+        private void CancelMultipartUpload(ObsClient client, string bucketName, string objectKey, string uploadId)
         {
             //取消分段上传任务
             try
             {
                 AbortMultipartUploadRequest request = new AbortMultipartUploadRequest
                 {
-                    BucketName = BucketName,
-                    ObjectKey = ObjectKey,
-                    UploadId = UploadId
+                    BucketName = bucketName,
+                    ObjectKey = objectKey,
+                    UploadId = uploadId
                 };
                 AbortMultipartUploadResponse response = client.AbortMultipartUpload(request);
                 if (response.StatusCode != HttpStatusCode.OK)
-                    logger.Log(LogLevel.Information, $"取消分片上传失败，任务Id：{UploadId}，ObjectKey：{ObjectKey}");
+                    logger.Log(LogLevel.Information, $"取消分片上传失败，任务Id：{uploadId}，ObjectKey：{objectKey}");
             }
             catch (ObsException ex)
             {

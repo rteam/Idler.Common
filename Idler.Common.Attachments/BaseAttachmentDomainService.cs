@@ -3,219 +3,218 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Idler.Common.Attachments;
 using Idler.Common.AutoMapper;
 using Idler.Common.Core;
 using Idler.Common.Core.Config;
 using Idler.Common.Core.Specification;
 using Idler.Common.Core.Upload;
+using Microsoft.Extensions.Options;
 
-namespace BCCore.DDD.Attachments
+namespace Idler.Common.Attachments
 {
     /// <summary>
     /// 基础附件服务实现
     /// </summary>
-    public abstract class BaseAttachmentDomainService : BaseDomainService, IAttachmentDomainService
+    public abstract class BaseAttachmentDomainService(
+        IRepository<Attachment, Guid> attachmentRepository,
+        IOptions<UploadConfig> uploadConfigAccessHelper,
+        IUnitOfWork unitOfWork)
+        : BaseDomainService(unitOfWork), IAttachmentDomainService
     {
-        public BaseAttachmentDomainService(
-            IRepository<Attachment, Guid> AttachmentRepository,
-            IConfigAccessHelper<UploadConfig> UploadConfigAccessHelper,
-            IUnitOfWork UnitOfWork)
-            : base(UnitOfWork)
-        {
-            this.AttachmentRepository = AttachmentRepository;
-            this.UploadConfigAccessHelper = UploadConfigAccessHelper;
-        }
-
-        protected readonly IConfigAccessHelper<UploadConfig> UploadConfigAccessHelper;
-        protected readonly IRepository<Attachment, Guid> AttachmentRepository;
-
         /// <summary>
         /// 新建
         /// </summary>
-        /// <param name="AddInfo"></param>
+        /// <param name="addInfo"></param>
         /// <returns></returns>
-        public virtual APIReturnInfo<AttachmentValue> Create(Attachment AddInfo)
+        public virtual APIReturnInfo<AttachmentValue> Create(AttachmentValue addInfo)
         {
-            if (AddInfo == null)
-                throw new ArgumentNullException(nameof(AddInfo));
+            if (addInfo == null)
+                throw new ArgumentNullException(nameof(addInfo));
 
-            AddInfo = this.AttachmentRepository.Add(AddInfo);
+            Attachment attachment = addInfo.Map<AttachmentValue, Attachment>();
+            attachment = attachmentRepository.Add(attachment);
             this.SaveChange();
-            return APIReturnInfo<AttachmentValue>.Success(AddInfo);
+            return APIReturnInfo<AttachmentValue>.Success(attachment.Map<Attachment, AttachmentValue>());
         }
 
         /// <summary>
         /// 编辑
         /// </summary>
-        /// <param name="EditInfo"></param>
+        /// <param name="editInfo">要编辑的信息</param>
+        /// <param name="id">要编辑信息的Id</param>
         /// <returns></returns>
-        public virtual APIReturnInfo<AttachmentValue> Edit(Attachment EditInfo)
+        public virtual APIReturnInfo<AttachmentValue> Edit(AttachmentValue editInfo, Guid id)
         {
-            if (EditInfo == null)
-                throw new ArgumentNullException("EditInfo");
+            if (editInfo == null)
+                throw new ArgumentNullException("editInfo");
 
-            this.AttachmentRepository.Update(EditInfo);
+            Attachment attachment = attachmentRepository.Single(id);
+            if (attachment == null)
+                return APIReturnInfo<AttachmentValue>.Error("要编辑的信息不存在");
+
+            editInfo.Map(attachment);
+
+            attachmentRepository.Update(attachment);
             this.SaveChange();
 
-            return APIReturnInfo<AttachmentValue>.Success(EditInfo);
+            return APIReturnInfo<AttachmentValue>.Success(attachment.Map<Attachment, AttachmentValue>());
         }
 
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="RemoveId"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public virtual APIReturnInfo<AttachmentValue> Remove(Guid RemoveId)
+        public virtual APIReturnInfo<AttachmentValue> Remove(Guid id)
         {
-            if (RemoveId.IsEmpty())
-                throw new ArgumentNullException("RemoveId");
+            if (id.IsEmpty())
+                throw new ArgumentNullException("id");
 
-            Attachment AttachmentInfo = this.AttachmentRepository.Remove(RemoveId);
+            Attachment attachmentInfo = attachmentRepository.Remove(id);
             this.SaveChange();
 
-            return APIReturnInfo<AttachmentValue>.Success(AttachmentInfo);
+            return APIReturnInfo<AttachmentValue>.Success(attachmentInfo.Map<Attachment, AttachmentValue>());
         }
 
         /// <summary>
         /// 取得特定信息
         /// </summary>
-        /// <param name="Id"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        public virtual Attachment Single(Guid Id)
+        public virtual Attachment Single(Guid id)
         {
-            if (Id.IsEmpty())
-                throw new ArgumentNullException("Id");
+            if (id.IsEmpty())
+                throw new ArgumentNullException("id");
 
-            return this.AttachmentRepository.Single(Id);
+            return attachmentRepository.Single(id);
         }
 
         /// <summary>
         /// 搜索附件
         /// </summary>
-        /// <param name="Keyword"></param>
-        /// <param name="UploadType"></param>
-        /// <param name="DependentId"></param>
-        /// <param name="PageNum"></param>
-        /// <param name="PageSize"></param>
+        /// <param name="keyword"></param>
+        /// <param name="uploadType"></param>
+        /// <param name="dependentId"></param>
+        /// <param name="pageNum"></param>
+        /// <param name="pageSize"></param>
         /// <returns></returns>
-        public virtual APIReturnInfo<ReturnPaging<AttachmentValue>> Search(string Keyword, string UploadType,
-            string DependentId, int PageNum = 1, int PageSize = 20)
+        public virtual APIReturnInfo<ReturnPaging<AttachmentValue>> Search(string keyword, string uploadType,
+            string dependentId, int pageNum = 1, int pageSize = 20)
         {
-            if (UploadType.IsEmpty())
-                throw new ArgumentNullException("UploadType");
+            if (uploadType.IsEmpty())
+                throw new ArgumentNullException("uploadType");
 
-            if (DependentId.IsEmpty())
-                throw new ArgumentNullException("DependentId");
+            if (dependentId.IsEmpty())
+                throw new ArgumentNullException("dependentId");
 
 
-            ISpecification<Attachment> Spec =
-                new Specification<Attachment>(t => t.DependentId == DependentId && t.UploadType == UploadType);
-            if (!Keyword.IsEmpty())
-                Spec = Spec.And(t => t.Name.Contains(Keyword));
+            ISpecification<Attachment> spec =
+                new Specification<Attachment>(t => t.DependentId == dependentId && t.UploadType == uploadType);
+            if (!keyword.IsEmpty())
+                spec = spec.And(t => t.Name.Contains(keyword));
 
-            ReturnPaging<AttachmentValue> Paging = new ReturnPaging<AttachmentValue>()
+            ReturnPaging<AttachmentValue> paging = new ReturnPaging<AttachmentValue>()
             {
-                PageSize = PageSize,
-                PageNum = PageNum,
-                Total = this.AttachmentRepository.Find(Spec.Expressions).Count()
+                PageSize = pageSize,
+                PageNum = pageNum,
+                Total = attachmentRepository.Find(spec.Expressions).Count()
             };
 
-            Paging.Compute();
-            Paging.PageListInfos = this.AttachmentRepository.Find(Spec.Expressions).OrderBy(t => t.CreateDate)
-                .Skip(Paging.Skip).Take(Paging.Take).ProjectTo<AttachmentValue>()
+            paging.Compute();
+            paging.PageListInfos = attachmentRepository.Find(spec.Expressions).OrderBy(t => t.CreateDate)
+                .Skip(paging.Skip).Take(paging.Take).ProjectTo<AttachmentValue>()
                 .ToList();
 
-            return APIReturnInfo<ReturnPaging<AttachmentValue>>.Success(Paging);
+            return APIReturnInfo<ReturnPaging<AttachmentValue>>.Success(paging);
         }
 
         /// <summary>
         /// 查找附件
         /// </summary>
-        /// <param name="UploadType">附件类型</param>
-        /// <param name="DependentId">依赖Id</param>
+        /// <param name="uploadType">附件类型</param>
+        /// <param name="dependentId">依赖Id</param>
         /// <returns></returns>
-        public virtual APIReturnInfo<IList<AttachmentValue>> Find(string UploadType, string DependentId)
+        public virtual APIReturnInfo<IList<AttachmentValue>> Find(string uploadType, string dependentId)
         {
-            if (UploadType.IsEmpty())
-                throw new ArgumentNullException("UploadType");
+            if (uploadType.IsEmpty())
+                throw new ArgumentNullException("uploadType");
 
-            if (DependentId.IsEmpty())
-                throw new ArgumentNullException("DependentId");
+            if (dependentId.IsEmpty())
+                throw new ArgumentNullException("dependentId");
 
-            return APIReturnInfo<IList<AttachmentValue>>.Success(this.AttachmentRepository
-                .Find(t => t.DependentId == DependentId && t.UploadType == UploadType)
+            return APIReturnInfo<IList<AttachmentValue>>.Success(attachmentRepository
+                .Find(t => t.DependentId == dependentId && t.UploadType == uploadType)
                 .ProjectTo<AttachmentValue>().ToList());
         }
 
         /// <summary>
         /// 查找附件
         /// </summary>
-        /// <param name="UploadType">附件类型</param>
-        /// <param name="DependentId">附件Id</param>
+        /// <param name="uploadType">附件类型</param>
+        /// <param name="dependentId">附件Id</param>
         /// <returns></returns>
-        public virtual APIReturnInfo<IList<AttachmentValue>> Find(string UploadType, Guid DependentId)
+        public virtual APIReturnInfo<IList<AttachmentValue>> Find(string uploadType, Guid dependentId)
         {
-            return this.Find(UploadType, DependentId.ToString());
+            return this.Find(uploadType, dependentId.ToString());
         }
 
         /// <summary>
         /// 查找附件
         /// </summary>
-        /// <param name="UploadType">附件类型</param>
-        /// <param name="DependentId">附件Id</param>
+        /// <param name="uploadType">附件类型</param>
+        /// <param name="dependentId">附件Id</param>
         /// <returns></returns>
-        public virtual APIReturnInfo<IList<AttachmentValue>> Find(string UploadType, int DependentId)
+        public virtual APIReturnInfo<IList<AttachmentValue>> Find(string uploadType, int dependentId)
         {
-            return this.Find(UploadType, DependentId.ToString());
+            return this.Find(uploadType, dependentId.ToString());
         }
 
         /// <summary>
         /// 生成上传指定文件的授权地址
         /// </summary>
-        /// <param name="ObjectKey">ObjectKey</param>
+        /// <param name="objectKey">ObjectKey</param>
         /// <returns></returns>
-        public abstract APIReturnInfo<string> GenerateUploadAuthorizationUrl(string ObjectKey);
-        
+        public abstract APIReturnInfo<string> GenerateUploadAuthorizationUrl(string objectKey);
+
         /// <summary>
         /// 从服务器删除附件
         /// </summary>
-        /// <param name="UploadType">附件类型</param>
-        /// <param name="DependentId">依赖Id</param>
+        /// <param name="uploadType">附件类型</param>
+        /// <param name="dependentId">依赖Id</param>
         /// <returns></returns>
-        public abstract APIReturnInfo<string> RemoveFromServer(string UploadType, string DependentId);
+        public abstract APIReturnInfo<string> RemoveFromServer(string uploadType, string dependentId);
 
         /// <summary>
         /// 从服务器删除指定附件
         /// </summary>
-        /// <param name="RemoveId">要删除的附件Id</param>
+        /// <param name="removeId">要删除的附件Id</param>
         /// <returns></returns>
-        public abstract APIReturnInfo<string> RemoveFromServer(Guid RemoveId);
+        public abstract APIReturnInfo<string> RemoveFromServer(Guid removeId);
 
         /// <summary>
         /// 处理临时附件
         /// </summary>
-        /// <param name="UploadType">附件类型</param>
-        /// <param name="TempDependentId">临时依赖Id</param>
-        /// <param name="DependentId">依赖Id</param>
+        /// <param name="uploadType">附件类型</param>
+        /// <param name="tempDependentId">临时依赖Id</param>
+        /// <param name="dependentId">依赖Id</param>
         /// <returns></returns>
-        public virtual APIReturnInfo<string> HandleTemp(string UploadType, string TempDependentId, string DependentId)
+        public virtual APIReturnInfo<string> HandleTemp(string uploadType, string tempDependentId, string dependentId)
         {
-            if (UploadType.IsEmpty())
-                throw new ArgumentNullException(nameof(UploadType));
+            if (uploadType.IsEmpty())
+                throw new ArgumentNullException(nameof(uploadType));
 
-            if (TempDependentId.IsEmpty())
-                throw new ArgumentNullException(nameof(TempDependentId));
+            if (tempDependentId.IsEmpty())
+                throw new ArgumentNullException(nameof(tempDependentId));
 
-            if (DependentId.IsEmpty())
-                throw new ArgumentNullException(nameof(DependentId));
+            if (dependentId.IsEmpty())
+                throw new ArgumentNullException(nameof(dependentId));
 
-            IList<Attachment> Attachments = this.AttachmentRepository
-                .Find(t => t.UploadType == UploadType && t.DependentId == TempDependentId).ToList();
-            if (Attachments == null || Attachments.Count == 0)
+            IList<Attachment> attachments = attachmentRepository
+                .Find(t => t.UploadType == uploadType && t.DependentId == tempDependentId).ToList();
+            if (attachments == null || attachments.Count == 0)
                 return APIReturnInfo<string>.Success("ok");
 
-            Attachments.ForEach(t => { t.DependentId = DependentId; });
+            attachments.ForEach(t => { t.DependentId = dependentId; });
 
             this.SaveChange();
 
@@ -225,25 +224,25 @@ namespace BCCore.DDD.Attachments
         /// <summary>
         /// 处理临时附件
         /// </summary>
-        /// <param name="UploadType">附件类型</param>
-        /// <param name="TempDependentId">临时依赖Id</param>
-        /// <param name="DependentId">依赖Id</param>
+        /// <param name="uploadType">附件类型</param>
+        /// <param name="tempDependentId">临时依赖Id</param>
+        /// <param name="dependentId">依赖Id</param>
         /// <returns></returns>
-        public virtual APIReturnInfo<string> HandleTemp(string UploadType, string TempDependentId, Guid DependentId)
+        public virtual APIReturnInfo<string> HandleTemp(string uploadType, string tempDependentId, Guid dependentId)
         {
-            return this.HandleTemp(UploadType, TempDependentId, DependentId.ToString());
+            return this.HandleTemp(uploadType, tempDependentId, dependentId.ToString());
         }
 
         /// <summary>
         /// 处理临时附件
         /// </summary>
-        /// <param name="UploadType">附件类型</param>
-        /// <param name="TempDependentId">临时依赖Id</param>
-        /// <param name="DependentId">依赖Id</param>
+        /// <param name="uploadType">附件类型</param>
+        /// <param name="tempDependentId">临时依赖Id</param>
+        /// <param name="dependentId">依赖Id</param>
         /// <returns></returns>
-        public virtual APIReturnInfo<string> HandleTemp(string UploadType, string TempDependentId, int DependentId)
+        public virtual APIReturnInfo<string> HandleTemp(string uploadType, string tempDependentId, int dependentId)
         {
-            return this.HandleTemp(UploadType, TempDependentId, DependentId.ToString());
+            return this.HandleTemp(uploadType, tempDependentId, dependentId.ToString());
         }
 
         /// <summary>
@@ -252,34 +251,34 @@ namespace BCCore.DDD.Attachments
         /// <returns></returns>
         public virtual UploadConfig Config()
         {
-            return this.UploadConfigAccessHelper.ConfigEntity;
+            return uploadConfigAccessHelper.Value;
         }
 
         /// <summary>
         /// 上传文件
         /// </summary>
-        /// <param name="UploadType">上传类型</param>
-        /// <param name="DependentId">依赖Id</param>
-        /// <param name="FileName">文件名</param>
-        /// <param name="FileSize">文件大小</param>
+        /// <param name="uploadType">上传类型</param>
+        /// <param name="dependentId">依赖Id</param>
+        /// <param name="fileName">文件名</param>
+        /// <param name="fileSize">文件大小</param>
         /// <param name="fileStream">文件流</param>
         /// <returns></returns>
-        public abstract APIReturnInfo<UploadFilInfo> Upload(string UploadType, string DependentId, string FileName,
-            long FileSize, Stream fileStream);
+        public abstract APIReturnInfo<UploadFilInfo> Upload(string uploadType, string dependentId, string fileName,
+            long fileSize, Stream fileStream);
 
         /// <summary>
         /// 初始化大文件上传任务
         /// </summary>
         /// <returns></returns>
-        public abstract APIReturnInfo<string> InitializeLargeFileUploadTask(string UploadType, string DependentId,
-            string FileName, long PartSize, long FileSize);
+        public abstract APIReturnInfo<string> InitializeLargeFileUploadTask(string uploadType, string dependentId,
+            string fileName, long partSize, long fileSize);
 
         /// <summary>
         /// 分块上传文件
         /// </summary>
-        /// <param name="TaskId">任务Id</param>
+        /// <param name="taskId">任务Id</param>
         /// <param name="fileStream">待上传文件流</param>
         /// <returns></returns>
-        public abstract APIReturnInfo<MultipartUploadResultValue> Upload(string TaskId, Stream fileStream);
+        public abstract APIReturnInfo<MultipartUploadResultValue> Upload(string taskId, Stream fileStream);
     }
 }

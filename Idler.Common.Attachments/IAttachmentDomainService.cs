@@ -16,21 +16,22 @@ namespace Idler.Common.Attachments
         /// </summary>
         /// <param name="addInfo"></param>
         /// <returns></returns>
-        APIReturnInfo<AttachmentValue> Create(Attachment addInfo);
+        APIReturnInfo<AttachmentValue> Create(AttachmentValue addInfo);
 
         /// <summary>
         /// 编辑
         /// </summary>
-        /// <param name="editInfo"></param>
+        /// <param name="editInfo">要编辑的信息</param>
+        /// <param name="id">要编辑信息的Id</param>
         /// <returns></returns>
-        APIReturnInfo<AttachmentValue> Edit(Attachment editInfo);
+        APIReturnInfo<AttachmentValue> Edit(AttachmentValue editInfo, Guid id);
 
         /// <summary>
         /// 删除
         /// </summary>
-        /// <param name="removeId"></param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        APIReturnInfo<AttachmentValue> Remove(Guid removeId);
+        APIReturnInfo<AttachmentValue> Remove(Guid id);
 
         /// <summary>
         /// 取得特定信息

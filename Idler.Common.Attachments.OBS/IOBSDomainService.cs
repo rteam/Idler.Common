@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 using OBS;
 using OBS.Model;
 
-namespace Idler.Common.OBS
+namespace Idler.Common.Attachments.OBS
 {
     public interface IOBSDomainService
     {
@@ -21,8 +21,6 @@ namespace Idler.Common.OBS
     internal class OBSDomainService(IOptions<OBSSetting> OBSConfigAccessHelper, ILogger<OBSDomainService> logger)
         : IOBSDomainService
     {
-        private readonly ILogger<OBSDomainService> logger = logger;
-
         /// <summary>
         /// 生成上传指定文件的授权地址
         /// </summary>
@@ -49,7 +47,7 @@ namespace Idler.Common.OBS
             }
             catch (ObsException e)
             {
-                this.logger.HandleException<ObsException>(e);
+                logger.HandleException<ObsException>(e);
                 return APIReturnInfo<string>.Error(e.ErrorMessage);
             }
         }
