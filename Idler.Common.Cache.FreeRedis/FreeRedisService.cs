@@ -1,6 +1,7 @@
 using System;
 using System.Text.Json;
 using FreeRedis;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 
 namespace Idler.Common.Cache.FreeRedis
@@ -23,12 +24,17 @@ namespace Idler.Common.Cache.FreeRedis
         /// <summary>
         /// 构造函数
         /// </summary>
-        public FreeRedisService(IOptions<FreeRedisCacheOption> option)
+        public FreeRedisService(IOptions<FreeRedisCacheOption> option, IConfiguration configuration)
         {
             if (option == null)
                 throw new NullReferenceException(nameof(option));
 
             this.Option = option.Value;
+            
+            string connectionStr = configuration.GetConnectionString(CacheConst.CACHE_CONNECTION_NAME);
+            if (!connectionStr.IsEmpty())
+                this.Option.Redis = connectionStr;
+            
             InitRedisClient();
         }
 

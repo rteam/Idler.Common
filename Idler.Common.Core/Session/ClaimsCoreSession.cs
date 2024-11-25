@@ -13,8 +13,8 @@ namespace Idler.Common.Core.Session
         {
             get
             {
-
-                var userIdClaim = PrincipalAccessor.Principal?.Claims.FirstOrDefault(t => t.Type == CoreClaimTypes.USER_ID);
+                var userIdClaim =
+                    PrincipalAccessor.Principal?.Claims.FirstOrDefault(t => t.Type == CoreClaimTypes.USER_ID);
                 if (userIdClaim == null || userIdClaim.Value.IsEmpty())
                     return Guid.Empty;
 
@@ -29,7 +29,8 @@ namespace Idler.Common.Core.Session
         {
             get
             {
-                var userNameClaim = PrincipalAccessor.Principal?.Claims.FirstOrDefault(t => t.Type == CoreClaimTypes.USER_NAME);
+                var userNameClaim =
+                    PrincipalAccessor.Principal?.Claims.FirstOrDefault(t => t.Type == CoreClaimTypes.USER_NAME);
                 if (userNameClaim == null || userNameClaim.Value.IsEmpty())
                     return CoreAuthenticationConst.USER_GUEST;
 
@@ -41,6 +42,7 @@ namespace Idler.Common.Core.Session
         /// PrincipalAccessor
         /// </summary>
         protected IPrincipalAccessor PrincipalAccessor { get; }
+
         /// <summary>
         /// 构造函数
         /// </summary>
@@ -48,7 +50,7 @@ namespace Idler.Common.Core.Session
         public ClaimsCoreSession(
             IPrincipalAccessor principalAccessor)
         {
-            this.PrincipalAccessor = principalAccessor;
+            this.PrincipalAccessor = principalAccessor ?? new DefaultPrincipalAccessor();
         }
     }
 }

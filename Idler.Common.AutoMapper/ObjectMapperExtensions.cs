@@ -16,7 +16,7 @@ namespace Idler.Common.AutoMapper
         /// <summary>
         /// 两对象之间映射
         /// </summary>
-        /// <typeparam name="TForm">来源类型</typeparam>
+        /// <typeparam name="TFrom">来源类型</typeparam>
         /// <typeparam name="TTo">目标类型</typeparam>
         /// <param name="Source">来源对象实例</param>
         /// <returns>映射好的目标对象实例</returns>
