@@ -27,9 +27,14 @@ namespace Idler.Common.EntityFrameworkCore
         {
         }
         
-        public CoreDBContext(DbContextOptions options,IServiceProvider serviceProvider) : base(options)
+        public CoreDBContext(DbContextOptions options) : base(options)
         {
 
+        }
+        
+        public CoreDBContext(DbContextOptions options,IServiceProvider serviceProvider) : this(options)
+        {
+            this.serviceProvider = serviceProvider;
         }
 
         /// <summary>

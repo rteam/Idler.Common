@@ -188,7 +188,8 @@ namespace Idler.Common.Attachments.OBS
                 //   public UploadFilInfo(string rootPath, string fileName, long fileSize, string uploadType, Guid id)
 
                 return APIReturnInfo<UploadFilInfo>.Success(new UploadFilInfo(fileInfo.RootPath,
-                    fileInfo.FileName, fileInfo.FileSize, uploadType, attachmentInfo.Id));
+                        fileInfo.FileName, fileInfo.FileSize, uploadType, attachmentInfo.Id)
+                    { RootUrl = obsConfigAccessHelper.Value.RootUrl });
             }
             catch (ObsException e)
             {
@@ -366,8 +367,9 @@ namespace Idler.Common.Attachments.OBS
                 this.SaveChange();
 
                 return APIReturnInfo<MultipartUploadResultValue>.Success(new MultipartUploadResultValue(taskInfo.TaskId,
-                    taskInfo.TotalPart, taskInfo.CurrentPart, taskInfo.SavePath, taskInfo.FileName,
-                    taskInfo.FileSize, taskInfo.UploadType, attachmentInfo.Id));
+                        taskInfo.TotalPart, taskInfo.CurrentPart, taskInfo.SavePath, taskInfo.FileName,
+                        taskInfo.FileSize, taskInfo.UploadType, attachmentInfo.Id)
+                    { RootUrl = obsConfigAccessHelper.Value.RootUrl });
             }
             catch (ObsException ex)
             {
