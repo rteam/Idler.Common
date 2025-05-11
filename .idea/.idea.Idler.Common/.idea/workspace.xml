@@ -5,51 +5,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e63355b7-66ed-4f90-87f4-d37d2e437878" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Attachments.AspNetCore/BaseAttachmentController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Attachments.AspNetCore/BaseUploadController.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Attachments.AspNetCore/Models/UploadModels.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/Idler.Common.Attachments.OSS.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSExtensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/ServiceBus/DefaultServiceBus.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/ServiceBus/EventBus.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.Core/ServiceBus/IServiceBus.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.ServiceBus.Dapr/DaprServiceBusSetting.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.ServiceBus.Dapr/ServiceBus.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.ServiceBus.Dapr/ServiceBusDaprExtensions.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.ServiceBus.MassTransit/Idler.Common.ServiceBus.MassTransit.csproj" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.ServiceBus.MassTransit/MassTransitConfig.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Idler.Common.ServiceBus.MassTransit/ServiceBus.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.Idler.Common/.idea/projectSettingsUpdater.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Idler.Common/.idea/projectSettingsUpdater.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/OSSSetting.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Idler.Common.WebAPIClient/WebApiClientCoreExtension.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.Idler.Common/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Idler.Common/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments/BaseAttachmentDomainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments/BaseAttachmentDomainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments/IAttachmentDomainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments/IAttachmentDomainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments/Idler.Common.Attachments.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments/Idler.Common.Attachments.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.AutoMapper/ObjectMapperExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.AutoMapper/ObjectMapperExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Autofac/Idler.Common.Autofac.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Autofac/Idler.Common.Autofac.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Cache.FreeRedis/FreeRedisService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Cache.FreeRedis/FreeRedisService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Cache/CacheConst.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Cache/CacheConst.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments.AspNetCore/Idler.Common.Attachments.AspNetCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.AspNetCore/Idler.Common.Attachments.AspNetCore.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments.OBS/Idler.Common.Attachments.OBS.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OBS/Idler.Common.Attachments.OBS.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments.OBS/OBSAttachmentDomainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OBS/OBSAttachmentDomainService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/Idler.Common.Attachments.OSS.Test.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/Idler.Common.Attachments.OSS.Test.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/OBSAttachmentDomainServiceTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/OBSAttachmentDomainServiceTest.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/Idler.Common.Attachments.OSS.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/Idler.Common.Attachments.OSS.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSAttachmentDomainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSAttachmentDomainService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Authorization.AspNetCore/Idler.Common.Authorization.AspNetCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Authorization.AspNetCore/Idler.Common.Authorization.AspNetCore.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Authorization.EntityFrameworkCore/Idler.Common.Authorization.EntityFrameworkCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Authorization.EntityFrameworkCore/Idler.Common.Authorization.EntityFrameworkCore.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Cache.FreeRedis/Idler.Common.Cache.FreeRedis.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Cache.FreeRedis/Idler.Common.Cache.FreeRedis.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.Core.AspNetCore/Idler.Common.Core.AspNetCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core.AspNetCore/Idler.Common.Core.AspNetCore.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Idler.Common.Core.Test/Idler.Common.Core.Test.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core.Test/Idler.Common.Core.Test.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Idler.Common.Core.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Idler.Common.Core.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Session/ClaimsCoreSession.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Core/Session/ClaimsCoreSession.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.Core/Upload/MultipartUploadResultValue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments/MultipartUploadResultValue.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/CoreDBContext.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/CoreDBContext.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/Idler.Common.EntityFrameworkCore.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.EntityFrameworkCore/Idler.Common.EntityFrameworkCore.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/Idler.Common.ExtendedAttribute.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.ExtendedAttribute/Idler.Common.ExtendedAttribute.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OBS/IOBSDomainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OBS/IOBSDomainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OBS/Idler.Common.OBS.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OBS/Idler.Common.Attachments.OBS.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OBS/MultipartUploadTaskValue.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments/MultipartUploadTaskValue.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OBS/OBSAttachmentDomainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OBS/OBSAttachmentDomainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OBS/OBSExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OBS/OBSExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OBS/OBSSetting.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OBS/OBSSetting.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OSS.Test/Idler.Common.OSS.Test.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/Idler.Common.Attachments.OSS.Test.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OSS.Test/OBSAttachmentDomainServiceTest.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/OBSAttachmentDomainServiceTest.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OSS.Test/testfile.png" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/testfile.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OSS/Idler.Common.OSS.csproj" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OSS/OSSAttachmentDomainService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSAttachmentDomainService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.OSS/OSSSetting.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSSetting.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.FluentEmail/Idler.Common.FluentEmail.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.FluentEmail/Idler.Common.FluentEmail.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.ServiceBus.Dapr/Idler.Common.ServiceBus.Dapr.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.ServiceBus.Dapr/Idler.Common.ServiceBus.Dapr.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Idler.Common.ServiceBus.MassTransit/Idler.Common.ServiceBus.MassTransit.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.ServiceBus.MassTransit/Idler.Common.ServiceBus.MassTransit.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Idler.Common.WebAPIClient/Idler.Common.WebAPIClient.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.WebAPIClient/Idler.Common.WebAPIClient.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Idler.Common.sln" beforeDir="false" afterPath="$PROJECT_DIR$/Idler.Common.sln" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/common.props" beforeDir="false" afterPath="$PROJECT_DIR$/common.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/global.json" beforeDir="false" afterPath="$PROJECT_DIR$/global.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +36,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="DpaMonitoringSettings">
-    <option name="autoShow" value="false" />
+    <option name="firstShow" value="false" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -83,15 +62,18 @@
 }</component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Idler.Common.Attachments.AspNetCore/Models/UploadModels.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/Config/OSSSetting.json" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Idler.Common.Attachments.OBS/OBSAttachmentDomainService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSAttachmentDomainService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSExtensions.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSSetting.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Idler.Common.Authorization.Abstractions/CorePermissionValue.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Idler.Common.WebAPIClient/WebApiClientCoreExtension.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/143836149403439da70c1af7f78fe4d115800/31/4a146b11/ClaimsPrincipal.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/143836149403439da70c1af7f78fe4d115800/d8/be16c6fa/ClaimsIdentity.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/170ed06f334647f4a873f87f6b55354687800/b1/fe77aff7/DaprClient.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/33ca601a103348c391efa1ca049020e95600/a3/55ecb05d/ClaimsPrincipal.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4bf5451c4bfc40c68f0342724a54b9a361400/b5/b0f2161f/OssClient.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6996b6b209664698a69e2adc20bda49f43a20/e8/d624550b/Assert.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9de0756ac7ce467bb97d56a1baed359d944a0/58/c12557fe/JsonIgnoreCondition.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a0741529c8554d199992ef9e50684668d82800/11/a38ed044/SafeFileHandle.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a09d024f0a3647b1989b6c00ae1f4cf543c00/68/47f2a43e/ConcurrentDictionary`2.cs" root0="FORCE_HIGHLIGHTING" />
@@ -99,7 +81,11 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f8dbf2e4204a4497b2061a48f87ada3626aa20/c7/dc8cde6f/ServiceProviderCache.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/f8dbf2e4204a4497b2061a48f87ada3626aa20/e0/0d97b187/DbContextOptions.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/3b1ca9ae4c42542ce48c7e78c36ad9b5cf71ebddb89c151a8eeeea532549/MapperConfigurationExpression.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/8432490bb105da8478a2139fcaf25d9b53b844ec8a6c46ccfa85b60515dd/OssClient.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/89594dfc791ceb4a1402253093ced85be5cc2e34d0b025473155745ffb1767/Assert.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/aa5bbd1b957a2b777e0f59a37519b2ac21e37b7ddcc60f04ac6bd78539339f5/MethodInfoExtensions.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/d6b757e154dd7f8c23e0e785431c97a76e4b9c6bdae38b978238421dbab55d/MethodBaseInvoker.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file:///usr/local/share/dotnet/sdk/8.0.401/Sdks/Microsoft.NET.Sdk/targets/Microsoft.NET.TargetFrameworkInference.targets" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
@@ -110,7 +96,7 @@
   </component>
   <component name="MetaFilesCheckinStateConfiguration" checkMetaFiles="true" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="Toolset" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -129,13 +115,15 @@
     &quot;9f14388f-0c97-4766-952d-7debc067b4c8.executor&quot;: &quot;Debug&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;XThreadsFramesViewSplitterKey&quot;: &quot;0.23636363&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;UpTo9.0&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.environmentSetup&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -248,6 +236,23 @@
       <workItem from="1731644370628" duration="2300000" />
       <workItem from="1732176068288" duration="1224000" />
       <workItem from="1732177767703" duration="1242000" />
+      <workItem from="1732533484937" duration="157000" />
+      <workItem from="1732533697114" duration="378000" />
+      <workItem from="1732534119666" duration="172000" />
+      <workItem from="1732534300565" duration="9583000" />
+      <workItem from="1732867407508" duration="1253000" />
+      <workItem from="1732874892578" duration="3724000" />
+      <workItem from="1733240960762" duration="891000" />
+      <workItem from="1733360506059" duration="947000" />
+      <workItem from="1733447801576" duration="627000" />
+      <workItem from="1733471130741" duration="5740000" />
+      <workItem from="1733965069088" duration="1844000" />
+      <workItem from="1736390402461" duration="21000" />
+      <workItem from="1736643013245" duration="6000" />
+      <workItem from="1737511920724" duration="636000" />
+      <workItem from="1737994285527" duration="1288000" />
+      <workItem from="1738261372112" duration="395000" />
+      <workItem from="1738311798421" duration="641000" />
     </task>
     <servers />
   </component>
@@ -322,6 +327,45 @@
           </properties>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSAttachmentDomainService.cs</url>
+          <line>213</line>
+          <properties documentPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSAttachmentDomainService.cs" containingFunctionPresentation="方法 'InitializeLargeFileUploadTask'">
+            <startOffsets>
+              <option value="9000" />
+            </startOffsets>
+            <endOffsets>
+              <option value="9025" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSAttachmentDomainService.cs</url>
+          <line>272</line>
+          <properties documentPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS/OSSAttachmentDomainService.cs" containingFunctionPresentation="方法 'Upload'">
+            <startOffsets>
+              <option value="11505" />
+            </startOffsets>
+            <endOffsets>
+              <option value="11567" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/OBSAttachmentDomainServiceTest.cs</url>
+          <line>83</line>
+          <properties documentPath="$PROJECT_DIR$/Idler.Common.Attachments.OSS.Test/OBSAttachmentDomainServiceTest.cs" containingFunctionPresentation="方法 'UTest'">
+            <startOffsets>
+              <option value="3415" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3511" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <watches-manager>
@@ -333,5 +377,9 @@
         <watch expression="data" language="C#" />
       </inline-watch>
     </watches-manager>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

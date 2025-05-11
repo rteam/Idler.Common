@@ -44,7 +44,8 @@ public class OBSAttachmentDomainServiceTest
                         {
                             { "jpg", 410221112 },
                             { "png", 410221112 },
-                            { "gif", 410221112 }
+                            { "gif", 410221112 },
+                            { "zip", 100016719 }
                         }
                     }
                 }
@@ -52,7 +53,7 @@ public class OBSAttachmentDomainServiceTest
         });
         var ossSettingMock = new Mock<IOptions<OSSSetting>>();
 
-        string setting = File.ReadAllText("Config/OSSSetting.json");
+        string setting = File.ReadAllText("OSSSetting.json");
         ossSettingMock.Setup(o => o.Value).Returns(setting.FromJson<OSSSetting>());
 
         return new OSSAttachmentDomainService(
@@ -69,12 +70,22 @@ public class OBSAttachmentDomainServiceTest
     public void InitializeLargeFileUploadTaskTest()
     {
         APIReturnInfo<string> result =
-            this.Service.InitializeLargeFileUploadTask("test", "test", "test.jpg", 40000, 41022112);
+            this.Service.InitializeLargeFileUploadTask("test", "RootHome", "ChromeSetup.zip", 5242880, 9016719);
 
         Assert.IsTrue(result.State);
     }
 
-
+    [TestMethod]
+    public void TaskidTest()
+    {
+        string taskId =
+            "JC4dIM0FO0Ng4ujFQDteFt8++q8DJUwYyKwD9bKgbVzlFcvAo4bdq69/7yhrrHSIMJQP7szseFZcCuhHtDIblz+W9QprFfweCGzCkFxbeHv4HW1Da9luK6tHJLJlG0zp7iz00/qpCZndhp4ccmSz86BWpmek+nLD59Q7jozJL7Ivd6coAOJxNdB0xOmNtdWJjSdvSEDvq8jtSfRmzzpQ6ThkAfJS71KT7UBeqKMGDFEcEL/vUzr5nFdUCc1+tbvtYgunplX7GErB3hOvkLeQbTX43DedLViwwUp1oKKX8jfjZIo5pb9WMIvtedEvNiQRoFamZ6T6csPn1DuOjMkvsi93pygA4nE10HTE6Y211Yn+ce11eDDizj2oPGZLXMvqXN+tbstQRHRJGRivclBWnV6QQ5qbrh3RaRPXhndVVSa6Q6ewLm3iZbcWiq3n+8kqU7uYLKjsd34/wnrRJaqz8ksOS13Kz08GakgLnDYyO4zcXnlx/SQkto79uoc3jbEqplz3JQQp4eoyM4MTLNk29Q==";
+        
+        APIReturnInfo<MultipartUploadResultValue> result =
+            this.Service.Upload(taskId,null);
+        
+    }
+    
     [TestMethod]
     public void GenerateUploadAuthorizationUrlTest()
     {

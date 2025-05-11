@@ -242,7 +242,7 @@ namespace Idler.Common.Attachments.OSS
                 string taskKeyConfig =
                     new MultipartUploadTaskValue(result.UploadId, uploadType, dependentId, partSize, fileInfo)
                         .ToConfig();
-
+                
                 return new APIReturnInfo<string>()
                 {
                     State = true, Data = taskKeyConfig.AESEncrypt(ossSetting.Value.SecretKey)
