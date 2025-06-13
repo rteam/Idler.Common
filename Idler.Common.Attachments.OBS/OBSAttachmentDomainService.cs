@@ -57,7 +57,10 @@ namespace Idler.Common.Attachments.OBS
                     return APIReturnInfo<string>.Success("ok");
 
                 return new APIReturnInfo<string>()
-                { State = false, Message = "有一些文件删除失败了" };
+                {
+                    State = false,
+                    Message = "有一些文件删除失败了"
+                };
             }
             catch (ObsException ex)
             {
@@ -185,8 +188,6 @@ namespace Idler.Common.Attachments.OBS
                 });
 
                 this.SaveChange();
-
-                //   public UploadFilInfo(string rootPath, string fileName, long fileSize, string uploadType, Guid id)
 
                 return APIReturnInfo<UploadFilInfo>.Success(new UploadFilInfo(fileInfo.RootPath,
                         fileInfo.FileName, fileInfo.FileSize, uploadType, attachmentInfo.Id)

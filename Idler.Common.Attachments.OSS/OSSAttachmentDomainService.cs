@@ -62,7 +62,10 @@ namespace Idler.Common.Attachments.OSS
                     return APIReturnInfo<string>.Success("ok");
 
                 return new APIReturnInfo<string>()
-                { State = false, Message = "有一些文件删除失败了" };
+                {
+                    State = false,
+                    Message = "有一些文件删除失败了"
+                };
             }
             catch (OssException ex)
             {
