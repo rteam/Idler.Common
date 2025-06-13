@@ -57,7 +57,7 @@ namespace Idler.Common.Attachments.OBS
                     return APIReturnInfo<string>.Success("ok");
 
                 return new APIReturnInfo<string>()
-                    { State = false, Message = "有一些文件删除失败了" };
+                { State = false, Message = "有一些文件删除失败了" };
             }
             catch (ObsException ex)
             {
@@ -78,7 +78,7 @@ namespace Idler.Common.Attachments.OBS
 
             Attachment attachmentInfo = attachmentRepository.Single(removeId);
             if (attachmentInfo == null)
-                return APIReturnInfo<string>.Error("福建不存在");
+                return APIReturnInfo<string>.Error("附件不存在");
 
             ObsClient client = new ObsClient(obsConfigAccessHelper.Value.AccessKey,
                 obsConfigAccessHelper.Value.SecretKey, obsConfigAccessHelper.Value.EndPoint);
@@ -91,7 +91,8 @@ namespace Idler.Common.Attachments.OBS
                 };
                 DeleteObjectResponse response = client.DeleteObject(request);
 
-                if (response.StatusCode == HttpStatusCode.OK)
+                if (response.StatusCode == HttpStatusCode.OK
+                    || response.StatusCode == HttpStatusCode.NoContent)
                     return APIReturnInfo<string>.Success("ok");
 
                 return APIReturnInfo<string>.Error("删除失败");
@@ -189,7 +190,10 @@ namespace Idler.Common.Attachments.OBS
 
                 return APIReturnInfo<UploadFilInfo>.Success(new UploadFilInfo(fileInfo.RootPath,
                         fileInfo.FileName, fileInfo.FileSize, uploadType, attachmentInfo.Id)
-                    { RootUrl = obsConfigAccessHelper.Value.RootUrl });
+                {
+                    RootUrl = obsConfigAccessHelper.Value.RootUrl,
+                    SaveFileName = fileInfo.SaveFileName
+                });
             }
             catch (ObsException e)
             {
@@ -247,7 +251,8 @@ namespace Idler.Common.Attachments.OBS
 
                 return new APIReturnInfo<string>()
                 {
-                    State = true, Data = taskKeyConfig.AESEncrypt(obsConfigAccessHelper.Value.SecretKey)
+                    State = true,
+                    Data = taskKeyConfig.AESEncrypt(obsConfigAccessHelper.Value.SecretKey)
                 };
             }
             catch (ObsException e)
@@ -369,7 +374,9 @@ namespace Idler.Common.Attachments.OBS
                 return APIReturnInfo<MultipartUploadResultValue>.Success(new MultipartUploadResultValue(taskInfo.TaskId,
                         taskInfo.TotalPart, taskInfo.CurrentPart, taskInfo.SavePath, taskInfo.FileName,
                         taskInfo.FileSize, taskInfo.UploadType, attachmentInfo.Id)
-                    { RootUrl = obsConfigAccessHelper.Value.RootUrl });
+                {
+                    RootUrl = obsConfigAccessHelper.Value.RootUrl
+                });
             }
             catch (ObsException ex)
             {

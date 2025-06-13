@@ -62,7 +62,7 @@ namespace Idler.Common.Attachments.OSS
                     return APIReturnInfo<string>.Success("ok");
 
                 return new APIReturnInfo<string>()
-                    { State = false, Message = "有一些文件删除失败了" };
+                { State = false, Message = "有一些文件删除失败了" };
             }
             catch (OssException ex)
             {
@@ -83,7 +83,7 @@ namespace Idler.Common.Attachments.OSS
 
             Attachment attachmentInfo = attachmentRepository.Single(removeId);
             if (attachmentInfo == null)
-                return APIReturnInfo<string>.Error("福建不存在");
+                return APIReturnInfo<string>.Error("附件不存在");
 
             var client = new OssClient(ossSetting.Value.EndPoint, ossSetting.Value.AccessKey,
                 ossSetting.Value.SecretKey, new ClientConfiguration() { SignatureVersion = SignatureVersion.V4 });
@@ -93,7 +93,8 @@ namespace Idler.Common.Attachments.OSS
                 DeleteObjectRequest request =
                     new DeleteObjectRequest(ossSetting.Value.BucketName, attachmentInfo.FullPath);
                 var result = client.DeleteObject(request);
-                if (result.HttpStatusCode != HttpStatusCode.OK)
+                if (result.HttpStatusCode != HttpStatusCode.OK
+                    && result.HttpStatusCode != HttpStatusCode.NoContent)
                     return APIReturnInfo<string>.Error("删除失败");
 
                 return APIReturnInfo<string>.Success("ok");
@@ -190,7 +191,11 @@ namespace Idler.Common.Attachments.OSS
                 this.SaveChange();
 
                 return APIReturnInfo<UploadFilInfo>.Success(new UploadFilInfo(fileInfo.RootPath,
-                    fileInfo.FileName, fileInfo.FileSize, uploadType, attachmentInfo.Id){ RootUrl = ossSetting.Value.RootUrl });
+                    fileInfo.FileName, fileInfo.FileSize, uploadType, attachmentInfo.Id)
+                {
+                    RootUrl = ossSetting.Value.RootUrl,
+                    SaveFileName = fileInfo.SaveFileName
+                });
             }
             catch (OssException e)
             {
@@ -242,10 +247,11 @@ namespace Idler.Common.Attachments.OSS
                 string taskKeyConfig =
                     new MultipartUploadTaskValue(result.UploadId, uploadType, dependentId, partSize, fileInfo)
                         .ToConfig();
-                
+
                 return new APIReturnInfo<string>()
                 {
-                    State = true, Data = taskKeyConfig.AESEncrypt(ossSetting.Value.SecretKey)
+                    State = true,
+                    Data = taskKeyConfig.AESEncrypt(ossSetting.Value.SecretKey)
                 };
             }
             catch (OssException e)
@@ -355,7 +361,10 @@ namespace Idler.Common.Attachments.OSS
 
                 return APIReturnInfo<MultipartUploadResultValue>.Success(new MultipartUploadResultValue(taskInfo.TaskId,
                     taskInfo.TotalPart, taskInfo.CurrentPart, taskInfo.SavePath, taskInfo.FileName,
-                    taskInfo.FileSize, taskInfo.UploadType, attachmentInfo.Id) { RootUrl = ossSetting.Value.RootUrl });
+                    taskInfo.FileSize, taskInfo.UploadType, attachmentInfo.Id)
+                {
+                    RootUrl = ossSetting.Value.RootUrl
+                });
             }
             catch (OssException ex)
             {
