@@ -11,12 +11,19 @@ namespace Idler.Common.Core.Session
     {
         private readonly IPrincipalAccessor _principalAccessor;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="principalAccessor"></param>
         public MicroServiceCoreSession(IPrincipalAccessor principalAccessor)
         {
             _principalAccessor = principalAccessor ?? new DefaultPrincipalAccessor();
         }
 
-        public override Guid UserId
+        /// <summary>
+        /// 用户身份Id
+        /// </summary>
+        public override string UserIdentifier
         {
             get
             {
@@ -24,12 +31,29 @@ namespace Idler.Common.Core.Session
                     .FirstOrDefault(t => t.Type == ClaimTypes.NameIdentifier);
 
                 if (claim == null || claim.Value.IsEmpty())
-                    return Guid.Empty;
+                    return string.Empty;
 
-                return claim.Value.IsGuid() ? claim.Value.GuidByString() : Guid.Empty;
+                return claim.Value;
             }
         }
 
+        /// <summary>
+        /// 用户Id
+        /// </summary>
+        public override Guid UserId
+        {
+            get
+            {
+                if (UserIdentifier == null || UserIdentifier.IsEmpty())
+                    return Guid.Empty;
+
+                return UserIdentifier.IsGuid() ? UserIdentifier.GuidByString() : Guid.Empty;
+            }
+        }
+
+        /// <summary>
+        /// 用户名
+        /// </summary>
         public override string UserName
         {
             get
