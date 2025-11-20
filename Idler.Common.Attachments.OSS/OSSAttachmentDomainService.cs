@@ -366,7 +366,8 @@ namespace Idler.Common.Attachments.OSS
                     taskInfo.TotalPart, taskInfo.CurrentPart, taskInfo.SavePath, taskInfo.FileName,
                     taskInfo.FileSize, taskInfo.UploadType, attachmentInfo.Id)
                 {
-                    RootUrl = ossSetting.Value.RootUrl
+                    RootUrl = ossSetting.Value.RootUrl,
+                    SaveFileName = taskInfo.SaveFileName
                 });
             }
             catch (OssException ex)

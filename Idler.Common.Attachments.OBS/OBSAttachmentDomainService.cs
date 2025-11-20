@@ -376,7 +376,8 @@ namespace Idler.Common.Attachments.OBS
                         taskInfo.TotalPart, taskInfo.CurrentPart, taskInfo.SavePath, taskInfo.FileName,
                         taskInfo.FileSize, taskInfo.UploadType, attachmentInfo.Id)
                 {
-                    RootUrl = obsConfigAccessHelper.Value.RootUrl
+                    RootUrl = obsConfigAccessHelper.Value.RootUrl,
+                    SaveFileName = taskInfo.SaveFileName
                 });
             }
             catch (ObsException ex)
