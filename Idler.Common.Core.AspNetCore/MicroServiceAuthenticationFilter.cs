@@ -42,8 +42,6 @@ public class MicroServiceAuthenticationFilter : IActionFilter
         ClaimsIdentity claimsIdentity = new ClaimsIdentity(AUTHENTICATION_TYPE, ClaimTypes.Name, ClaimTypes.Role);
         claimsIdentity.AddClaim(new Claim(ClaimTypes.Name, UserName));
         claimsIdentity.AddClaim(new Claim(ClaimTypes.NameIdentifier, UserId.ToString()));
-        claimsIdentity.AddClaim(new Claim(CoreClaimTypes.USER_ID, UserId));
-        claimsIdentity.AddClaim(new Claim(CoreClaimTypes.USER_NAME, UserName));
         context.HttpContext.User = new ClaimsPrincipal(claimsIdentity);
         Thread.CurrentPrincipal = context.HttpContext.User ;
     }
