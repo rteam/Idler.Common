@@ -19,6 +19,11 @@ namespace Idler.Common.Core.Session
         /// </summary>
         public virtual string UserName { get; protected set; }
 
+        /// <summary>
+        /// 用户身份Id
+        /// </summary>
+        public virtual string UserIdentifier { get; protected set; }
+
 
         /// <summary>
         /// 构造函数

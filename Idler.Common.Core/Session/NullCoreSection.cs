@@ -9,6 +9,8 @@ namespace Idler.Common.Core.Session
 
         public Guid UserId => Guid.Empty;
 
+        public string UserIdentifier => string.Empty;
+
         public string UserName => CoreAuthenticationConst.USER_GUEST;
 
     }
