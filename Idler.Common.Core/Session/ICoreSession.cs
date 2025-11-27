@@ -20,5 +20,9 @@ namespace Idler.Common.Core.Session
         /// 用户名
         /// </summary>
         string UserName { get; }
+        /// <summary>
+        /// 用户身份Id
+        /// </summary>
+        string UserIdentifier { get; }
     }
 }
