@@ -1,5 +1,6 @@
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Globalization;
 
 namespace System.Security.Cryptography
 {
@@ -25,12 +26,12 @@ namespace System.Security.Cryptography
                 return string.Empty;
 
             byte[] hashedBytes = Encoding.GetEncoding(936).GetBytes(plainText + GenerateNoise(customNoise, allowNoise));
-            HashAlgorithm hashAlgorithm = new SHA1CryptoServiceProvider();
+            using HashAlgorithm hashAlgorithm = System.Security.Cryptography.SHA1.Create();
             hashedBytes = hashAlgorithm.ComputeHash(hashedBytes);
             StringBuilder sb = new StringBuilder();
             foreach (byte hashedByte in hashedBytes)
             {
-                sb.AppendFormat("{0:x2}", hashedByte);
+                sb.AppendFormat(CultureInfo.CurrentCulture, "{0:x2}", hashedByte);
             }
 
             return sb.ToString();
@@ -65,13 +66,16 @@ namespace System.Security.Cryptography
             if (plainText.IsEmpty())
                 return string.Empty;
 
-            X509Certificate2 objx5092 = publicKeyPassword.IsEmpty()
+            using X509Certificate2 objx5092 = publicKeyPassword.IsEmpty()
                 ? new X509Certificate2(publicKeyPath)
                 : new X509Certificate2(publicKeyPath, publicKeyPassword);
 
-            RSACryptoServiceProvider rsa = objx5092.PrivateKey as RSACryptoServiceProvider;
+            using RSA rsa = objx5092.GetRSAPrivateKey();
+            if (rsa == null)
+                throw new CryptographicException("证书中不存在RSA私钥");
+
             byte[] data = Encoding.UTF8.GetBytes(plainText);
-            byte[] hashvalue = rsa.SignData(data, "SHA1");
+            byte[] hashvalue = rsa.SignData(data, HashAlgorithmName.SHA1, RSASignaturePadding.Pkcs1);
             return BytesToHexStr(hashvalue);
         }
 
@@ -104,12 +108,12 @@ namespace System.Security.Cryptography
                 return string.Empty;
 
             byte[] sor = Encoding.UTF8.GetBytes(plainText);
-            MD5 md5 = new MD5CryptoServiceProvider();
+            using MD5 md5 = System.Security.Cryptography.MD5.Create();
             byte[] result = md5.ComputeHash(sor);
             StringBuilder sb = new StringBuilder(40);
             foreach (var item in result)
             {
-                sb.Append(item.ToString(md5Type));
+                sb.Append(item.ToString(md5Type, CultureInfo.CurrentCulture));
             }
 
             return sb.ToString();

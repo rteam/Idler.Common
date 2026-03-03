@@ -39,7 +39,7 @@ namespace Idler.Common.Attachments.OBS
             if (dependentId.IsEmpty())
                 throw new ArgumentNullException(nameof(dependentId));
 
-            IList<string> fullPaths = attachmentRepository
+            IList<string> fullPaths = this.AttachmentRepository
                 .Find(t => t.UploadType == uploadType && t.DependentId == dependentId).Select(t => t.FullPath).ToList();
             if (fullPaths.Count == 0)
                 return APIReturnInfo<string>.Success("ok");
@@ -79,7 +79,7 @@ namespace Idler.Common.Attachments.OBS
             if (removeId.IsEmpty())
                 throw new ArgumentNullException(nameof(removeId));
 
-            Attachment attachmentInfo = attachmentRepository.Single(removeId);
+            Attachment attachmentInfo = this.AttachmentRepository.Single(removeId);
             if (attachmentInfo == null)
                 return APIReturnInfo<string>.Error("附件不存在");
 
@@ -172,7 +172,7 @@ namespace Idler.Common.Attachments.OBS
                 if (response.StatusCode != HttpStatusCode.OK)
                     return APIReturnInfo<UploadFilInfo>.Error("上传失败");
 
-                Attachment attachmentInfo = attachmentRepository.Add(new Attachment()
+                Attachment attachmentInfo = this.AttachmentRepository.Add(new Attachment()
                 {
                     DependentId = dependentId,
                     FileExt = fileInfo.FileExt,
@@ -356,7 +356,7 @@ namespace Idler.Common.Attachments.OBS
                     return APIReturnInfo<MultipartUploadResultValue>.Error("上传失败");
                 }
 
-                Attachment attachmentInfo = attachmentRepository.Add(new Attachment()
+                Attachment attachmentInfo = this.AttachmentRepository.Add(new Attachment()
                 {
                     DependentId = taskInfo.DependentId,
                     FileExt = taskInfo.FileExt,

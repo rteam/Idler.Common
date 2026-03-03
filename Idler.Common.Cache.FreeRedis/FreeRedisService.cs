@@ -27,7 +27,10 @@ namespace Idler.Common.Cache.FreeRedis
         public FreeRedisService(IOptions<FreeRedisCacheOption> option, IConfiguration configuration)
         {
             if (option == null)
-                throw new NullReferenceException(nameof(option));
+                throw new ArgumentNullException(nameof(option));
+
+            if (configuration == null)
+                throw new ArgumentNullException(nameof(configuration));
 
             this.Option = option.Value;
             
@@ -46,19 +49,18 @@ namespace Idler.Common.Cache.FreeRedis
         /// <returns></returns>
         bool InitRedisClient()
         {
-            if (_client == null)
+            if (_client != null)
+                return true;
+
+            lock (obj)
             {
-                lock (obj)
+                if (_client == null)
                 {
-                    if (_client == null)
+                    _client = new RedisClient(this.Option.Redis)
                     {
-                        _client = new RedisClient(this.Option.Redis)
-                        {
-                            Serialize = obj => obj.ToJSON(),
-                            Deserialize = (json, objectType) => json.FromJson(objectType)
-                        };
-                        return true;
-                    }
+                        Serialize = obj => obj.ToJSON(),
+                        Deserialize = (json, objectType) => json.FromJson(objectType)
+                    };
                 }
             }
 
@@ -77,7 +79,7 @@ namespace Idler.Common.Cache.FreeRedis
                     return _client;
                 }
 
-                throw new AggregateException("Redis不可用");
+                throw new InvalidOperationException("Redis不可用");
             }
         }
     }

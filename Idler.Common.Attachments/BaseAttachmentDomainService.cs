@@ -21,6 +21,9 @@ namespace Idler.Common.Attachments
         IUnitOfWork unitOfWork)
         : BaseDomainService(unitOfWork), IAttachmentDomainService
     {
+        protected readonly IRepository<Attachment, Guid> AttachmentRepository = attachmentRepository;
+        protected readonly IOptions<UploadConfig> UploadConfigAccessHelper = uploadConfigAccessHelper;
+
         /// <summary>
         /// 新建
         /// </summary>
@@ -32,7 +35,7 @@ namespace Idler.Common.Attachments
                 throw new ArgumentNullException(nameof(addInfo));
 
             Attachment attachment = addInfo.Map<AttachmentValue, Attachment>();
-            attachment = attachmentRepository.Add(attachment);
+            attachment = this.AttachmentRepository.Add(attachment);
             this.SaveChange();
             return APIReturnInfo<AttachmentValue>.Success(attachment.Map<Attachment, AttachmentValue>());
         }
@@ -48,13 +51,13 @@ namespace Idler.Common.Attachments
             if (editInfo == null)
                 throw new ArgumentNullException("editInfo");
 
-            Attachment attachment = attachmentRepository.Single(id);
+            Attachment attachment = this.AttachmentRepository.Single(id);
             if (attachment == null)
                 return APIReturnInfo<AttachmentValue>.Error("要编辑的信息不存在");
 
             editInfo.Map(attachment);
 
-            attachmentRepository.Update(attachment);
+            this.AttachmentRepository.Update(attachment);
             this.SaveChange();
 
             return APIReturnInfo<AttachmentValue>.Success(attachment.Map<Attachment, AttachmentValue>());
@@ -70,7 +73,7 @@ namespace Idler.Common.Attachments
             if (id.IsEmpty())
                 throw new ArgumentNullException("id");
 
-            Attachment attachmentInfo = attachmentRepository.Remove(id);
+            Attachment attachmentInfo = this.AttachmentRepository.Remove(id);
             this.SaveChange();
 
             return APIReturnInfo<AttachmentValue>.Success(attachmentInfo.Map<Attachment, AttachmentValue>());
@@ -86,7 +89,7 @@ namespace Idler.Common.Attachments
             if (id.IsEmpty())
                 throw new ArgumentNullException("id");
 
-            return attachmentRepository.Single(id);
+            return this.AttachmentRepository.Single(id);
         }
 
         /// <summary>
@@ -117,11 +120,11 @@ namespace Idler.Common.Attachments
             {
                 PageSize = pageSize,
                 PageNum = pageNum,
-                Total = attachmentRepository.Find(spec.Expressions).Count()
+                Total = this.AttachmentRepository.Find(spec.Expressions).Count()
             };
 
             paging.Compute();
-            paging.PageListInfos = attachmentRepository.Find(spec.Expressions).OrderBy(t => t.CreateDate)
+            paging.PageListInfos = this.AttachmentRepository.Find(spec.Expressions).OrderBy(t => t.CreateDate)
                 .Skip(paging.Skip).Take(paging.Take).ProjectTo<AttachmentValue>()
                 .ToList();
 
@@ -142,7 +145,7 @@ namespace Idler.Common.Attachments
             if (dependentId.IsEmpty())
                 throw new ArgumentNullException("dependentId");
 
-            return APIReturnInfo<IList<AttachmentValue>>.Success(attachmentRepository
+            return APIReturnInfo<IList<AttachmentValue>>.Success(this.AttachmentRepository
                 .Find(t => t.DependentId == dependentId && t.UploadType == uploadType)
                 .ProjectTo<AttachmentValue>().ToList());
         }
@@ -209,7 +212,7 @@ namespace Idler.Common.Attachments
             if (dependentId.IsEmpty())
                 throw new ArgumentNullException(nameof(dependentId));
 
-            IList<Attachment> attachments = attachmentRepository
+            IList<Attachment> attachments = this.AttachmentRepository
                 .Find(t => t.UploadType == uploadType && t.DependentId == tempDependentId).ToList();
             if (attachments == null || attachments.Count == 0)
                 return APIReturnInfo<string>.Success("ok");
@@ -251,7 +254,7 @@ namespace Idler.Common.Attachments
         /// <returns></returns>
         public virtual UploadConfig Config()
         {
-            return uploadConfigAccessHelper.Value;
+            return this.UploadConfigAccessHelper.Value;
         }
 
         /// <summary>

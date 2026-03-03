@@ -54,10 +54,7 @@ namespace Idler.Common.EntityFrameworkCore
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             
-            if (modelBuilder == null)
-            {
-                throw new ArgumentNullException("modelBuilder");
-            }
+            ArgumentNullException.ThrowIfNull(modelBuilder);
 
             base.OnModelCreating(modelBuilder);
 

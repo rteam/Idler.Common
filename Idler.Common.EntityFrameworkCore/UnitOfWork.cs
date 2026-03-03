@@ -25,9 +25,9 @@ namespace Idler.Common.EntityFrameworkCore
             {
                 this.DataContext.SaveChanges();
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
-                throw e;
+                throw;
             }
         }
 
@@ -40,9 +40,9 @@ namespace Idler.Common.EntityFrameworkCore
             {
                 await this.DataContext.SaveChangesAsync().ConfigureAwait(false);
             }
-            catch (System.Exception e)
+            catch (System.Exception)
             {
-                throw e;
+                throw;
             }
         }
 
