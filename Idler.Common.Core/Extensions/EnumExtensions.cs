@@ -10,8 +10,7 @@ namespace System;
 /// </summary>
 public static class EnumExtensions
 {
-    private static ConcurrentDictionary<Type, IDictionary<string, string>> _enumToDictionaryCache =
-        new ConcurrentDictionary<Type, IDictionary<string, string>>();
+    private static readonly ConcurrentDictionary<Type, IDictionary<string, string>> _enumToDictionaryCache = new();
 
     /// <summary>
     /// 将一个枚举对象转换为字典
@@ -33,7 +32,7 @@ public static class EnumExtensions
     private static IDictionary<string, string> BuildEnumDictionary(Type enumType)
     {
         var fields = enumType.GetFields(BindingFlags.Public | BindingFlags.Static);
-        var dictionary = new Dictionary<string, string>();
+        var dictionary = new Dictionary<string, string>(fields.Length);
 
         foreach (var field in fields)
         {

@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Linq;
 
 namespace Idler.Common.Core
@@ -37,7 +38,8 @@ namespace Idler.Common.Core
         /// <returns></returns>
         public static APIReturnInfo<T> Success(string message, params object[] args)
         {
-            return new APIReturnInfo<T>() { State = true, StateCode = BaseStateCode.STATE_CODE_SUCCESS, Message = string.Format(message, args) };
+            return new APIReturnInfo<T>()
+                { State = true, StateCode = BaseStateCode.STATE_CODE_SUCCESS, Message = string.Format(CultureInfo.CurrentCulture, message, args) };
         }
 
         /// <summary>
@@ -59,7 +61,8 @@ namespace Idler.Common.Core
         /// <returns></returns>
         public static APIReturnInfo<T> Error(string message, int StateCode = BaseStateCode.STATE_CODE_ERROR, params object[] args)
         {
-            return new APIReturnInfo<T>() { State = false, StateCode = BaseStateCode.STATE_CODE_ERROR, Message = string.Format(message, args) };
+            return new APIReturnInfo<T>()
+                { State = false, StateCode = BaseStateCode.STATE_CODE_ERROR, Message = string.Format(CultureInfo.CurrentCulture, message, args) };
         }
 
         /// <summary>
@@ -70,7 +73,8 @@ namespace Idler.Common.Core
         /// <returns></returns>
         public static APIReturnInfo<T> Error(string message, params object[] args)
         {
-            return new APIReturnInfo<T>() { State = false, StateCode = BaseStateCode.STATE_CODE_ERROR, Message = string.Format(message, args) };
+            return new APIReturnInfo<T>()
+                { State = false, StateCode = BaseStateCode.STATE_CODE_ERROR, Message = string.Format(CultureInfo.CurrentCulture, message, args) };
         }
 
         /// <summary>

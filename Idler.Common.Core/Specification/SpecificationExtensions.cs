@@ -18,7 +18,7 @@ namespace Idler.Common.Core.Specification
             this ISpecification<T> original, Expression<Func<T, bool>> target)
         {
             if (original == null && target == null)
-                throw new ArgumentNullException("表达式两侧不能都是null");
+                throw new ArgumentNullException(nameof(original), "表达式两侧不能都是null");
 
             if (original == null)
                 return new Specification<T>(target);
@@ -43,7 +43,7 @@ namespace Idler.Common.Core.Specification
             this ISpecification<T> original, Expression<Func<T, bool>> target)
         {
             if (original == null && target == null)
-                throw new ArgumentNullException("表达式两侧不能都是null");
+                throw new ArgumentNullException(nameof(original), "表达式两侧不能都是null");
 
             if (original == null)
                 return new Specification<T>(target);

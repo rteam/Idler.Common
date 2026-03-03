@@ -28,10 +28,14 @@ namespace Idler.Common.EntityFrameworkCore
         /// <param name="entitys">要插入数据的对象</param>
         public virtual void BulkInsert(IEnumerable<TEntity> entitys)
         {
-            if (entitys == null || entitys.Count() == 0)
+            if (entitys == null)
                 return;
 
-            this.DbSet.AddRange(entitys);
+            ICollection<TEntity> entities = entitys as ICollection<TEntity> ?? entitys.ToArray();
+            if (entities.Count == 0)
+                return;
+
+            this.DbSet.AddRange(entities);
         }
 
         /// <summary>
@@ -43,10 +47,14 @@ namespace Idler.Common.EntityFrameworkCore
         public virtual async Task BulkInsertAsync(IEnumerable<TEntity> entitys,
             CancellationToken cancellationToken = default)
         {
-            if (entitys == null || entitys.Count() == 0)
+            if (entitys == null)
                 return;
 
-            await this.DbSet.AddRangeAsync(entitys, cancellationToken).ConfigureAwait(false);
+            ICollection<TEntity> entities = entitys as ICollection<TEntity> ?? entitys.ToArray();
+            if (entities.Count == 0)
+                return;
+
+            await this.DbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
@@ -184,7 +192,7 @@ namespace Idler.Common.EntityFrameworkCore
         public virtual async Task<TEntity> UpdateAsync(TKey id, Func<TEntity, Task> updateAction,
             CancellationToken cancellationToken = default)
         {
-            TEntity entityInfo = await this.SingleAsync(id).ConfigureAwait(false);
+            TEntity entityInfo = await this.SingleAsync(id, cancellationToken).ConfigureAwait(false);
             await updateAction(entityInfo).ConfigureAwait(false);
             return entityInfo;
         }

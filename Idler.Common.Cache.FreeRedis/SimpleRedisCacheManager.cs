@@ -149,7 +149,7 @@ namespace Idler.Common.Cache.FreeRedis
                 var result = this.Client.Scan(cursor, pattern, 10, "");
 
                 foreach (var item in result.items)
-                    removeCount += removeCount + this.Client.Del(item);
+                    removeCount += this.Client.Del(item);
 
                 if (result.cursor > 0)
                     ScanRemoves(pattern, result.cursor);

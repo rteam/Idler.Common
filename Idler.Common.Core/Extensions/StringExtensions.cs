@@ -94,7 +94,7 @@ namespace System
         public static Guid[] SplitToGuidArray(this string inputString, string separator = ",")
         {
             if (inputString.IsEmpty() || separator.IsEmpty())
-                return new Guid[] { };
+                return Array.Empty<Guid>();
 
             return inputString.Split(',').GuidByString();
         }
@@ -122,7 +122,7 @@ namespace System
         public static int[] SplitToIntArray(this string inputString, string separator = ",")
         {
             if (inputString.IsEmpty() || separator.IsEmpty())
-                return new int[] { };
+                return Array.Empty<int>();
 
             return Regex.Split(inputString, separator).ToArray().IntByString();
         }
@@ -137,7 +137,7 @@ namespace System
         /// </returns>
         public static string SetEndChar(this string inputString, string endChar)
         {
-            if (inputString.EndsWith(endChar))
+            if (inputString.EndsWith(endChar, StringComparison.Ordinal))
                 return inputString;
 
             return inputString + endChar;
@@ -153,7 +153,7 @@ namespace System
         /// </returns>
         public static string SetStartChar(this string inputString, string startChar)
         {
-            if (inputString.StartsWith(startChar))
+            if (inputString.StartsWith(startChar, StringComparison.Ordinal))
                 return inputString;
 
             return startChar + inputString;

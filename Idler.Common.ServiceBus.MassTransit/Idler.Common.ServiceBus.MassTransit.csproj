@@ -2,7 +2,7 @@
 
     <Import Project="../common.props"/>
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <PackageId>Idler.Common.ServiceBus.MassTransit</PackageId>
     </PropertyGroup>
 
@@ -12,7 +12,7 @@
 
     <ItemGroup>
         <PackageReference Include="MassTransit.RabbitMQ" Version="8.3.2" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.3" />
     </ItemGroup>
 
 </Project>

@@ -89,7 +89,7 @@ public abstract class ReadonlyBaseDbContextRepository<TEntity, TKey> : IReadonly
     public virtual async Task<TEntity> SingleAsync(TKey id,
         CancellationToken cancellationToken = default)
     {
-        return await this.DbSet.FindAsync(id, cancellationToken).ConfigureAwait(false);
+        return await this.DbSet.FindAsync(new object[] { id }, cancellationToken).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -221,7 +221,7 @@ public abstract class ReadonlyBaseDbContextRepository<TEntity, TKey> : IReadonly
     /// <returns></returns>
     public virtual bool IsExist(Expression<Func<TEntity, bool>> where)
     {
-        return this.DbSet.Count(where) > 0;
+        return this.DbSet.Any(where);
     }
 
     /// <summary>
@@ -310,7 +310,7 @@ public abstract class ReadonlyBaseDbContextRepository<TEntity, TKey> : IReadonly
         CancellationToken cancellationToken = default
     )
     {
-        return await this.DbSet.IgnoreQueryFilters().CountAsync(where, cancellationToken).ConfigureAwait(false) > 0;
+        return await this.DbSet.IgnoreQueryFilters().AnyAsync(where, cancellationToken).ConfigureAwait(false);
     }
 
 
@@ -333,7 +333,7 @@ public abstract class ReadonlyBaseDbContextRepository<TEntity, TKey> : IReadonly
     /// <returns></returns>
     public virtual bool IsExistIgnoreQueryFilters(Expression<Func<TEntity, bool>> where)
     {
-        return this.DbSet.IgnoreQueryFilters().Count(where) > 0;
+        return this.DbSet.IgnoreQueryFilters().Any(where);
     }
 
     /// <summary>
@@ -368,7 +368,7 @@ public abstract class ReadonlyBaseDbContextRepository<TEntity, TKey> : IReadonly
         Expression<Func<TEntity, bool>> where,
         CancellationToken cancellationToken = default)
     {
-        return await this.DbSet.CountAsync(where).ConfigureAwait(false) > 0;
+        return await this.DbSet.AnyAsync(where, cancellationToken).ConfigureAwait(false);
     }
 
     #endregion

@@ -2,14 +2,14 @@
     <Import Project="../common.props" />
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <PackageId>Idler.Common.WebAPIClient</PackageId>
         <OutputType>Library</OutputType>
         <IsPackable>true</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="WebApiClientCore" Version="2.1.4" />
+      <PackageReference Include="WebApiClientCore" Version="2.1.5" />
     </ItemGroup>
 
     <ItemGroup>

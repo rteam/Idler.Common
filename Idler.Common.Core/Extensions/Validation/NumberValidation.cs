@@ -24,7 +24,7 @@ namespace System
         /// <returns>转换失败的直接抛弃</returns>
         public static IList<int> IntByString(this IList<string> inputStrings)
         {
-            IList<int> tList = new List<int>();
+            List<int> tList = new List<int>();
 
             foreach (string item in inputStrings)
                 if (int.TryParse(item, out int tInt))
@@ -41,9 +41,9 @@ namespace System
         public static int[] IntByString(this string[] inputStrings)
         {
             if (inputStrings == null)
-                return new int[] { };
+                return Array.Empty<int>();
 
-            IList<int> tList = new List<int>();
+            List<int> tList = new List<int>();
             foreach (string item in inputStrings)
                 if (int.TryParse(item, out int tInt))
                     tList.Add(tInt);
@@ -82,7 +82,7 @@ namespace System
         /// <returns>转换失败的直接抛弃</returns>
         public static IList<decimal> DecimalByString(this IList<string> inputStrings)
         {
-            IList<decimal> tList = new List<decimal>();
+            List<decimal> tList = new List<decimal>();
 
             foreach (string item in inputStrings)
                 if (decimal.TryParse(item, out var tDecimal))
@@ -122,7 +122,7 @@ namespace System
         /// <returns>转换失败的直接抛弃</returns>
         public static IList<long> longByString(this IList<string> inputStrings)
         {
-            IList<long> tList = new List<long>();
+            List<long> tList = new List<long>();
 
             foreach (string Item in inputStrings)
             {

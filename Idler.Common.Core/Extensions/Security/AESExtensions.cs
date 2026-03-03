@@ -34,10 +34,9 @@ namespace System.Security.Cryptography
                 byte[] keyArray = GetKeyArray(privateKey, DefaultKey);
                 byte[] toEncryptArray = Convert.FromBase64String(cipherText);
 
-                RijndaelManaged rDel = new RijndaelManaged
+                using RijndaelManaged rDel = new RijndaelManaged
                     { Key = keyArray, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7 };
-
-                ICryptoTransform cTransform = rDel.CreateDecryptor();
+                using ICryptoTransform cTransform = rDel.CreateDecryptor();
                 byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
                 return UTF8Encoding.UTF8.GetString(resultArray);
@@ -59,10 +58,9 @@ namespace System.Security.Cryptography
             byte[] keyArray = GetKeyArray(privateKey, DefaultKey);
             byte[] toEncryptArray = UTF8Encoding.UTF8.GetBytes(plainText);
 
-            RijndaelManaged rDel = new RijndaelManaged
+            using RijndaelManaged rDel = new RijndaelManaged
                 { Key = keyArray, Mode = CipherMode.ECB, Padding = PaddingMode.PKCS7 };
-
-            ICryptoTransform cTransform = rDel.CreateEncryptor();
+            using ICryptoTransform cTransform = rDel.CreateEncryptor();
             byte[] resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
 
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);

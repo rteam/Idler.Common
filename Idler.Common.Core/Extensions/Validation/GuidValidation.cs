@@ -27,7 +27,7 @@ namespace System
         /// <returns></returns>
         public static IEnumerable<Guid> ThrowIfNull(this IEnumerable<Guid> inputGuids, string parameterName)
         {
-            if (inputGuids == null || inputGuids.Count() == 0)
+            if (inputGuids == null || !inputGuids.Any())
                 throw new ArgumentNullException(parameterName);
 
             foreach (Guid item in inputGuids)
@@ -56,7 +56,7 @@ namespace System
         /// <returns></returns>
         public static bool IsEmpty(this IEnumerable<Guid> inputGuids)
         {
-            if (inputGuids == null || inputGuids.Count() == 0)
+            if (inputGuids == null || !inputGuids.Any())
                 return true;
 
             foreach (Guid item in inputGuids)
@@ -86,7 +86,7 @@ namespace System
         /// <returns>转换失败的直接抛弃</returns>
         public static IList<Guid> GuidByString(this IList<string> inputStrings)
         {
-            IList<Guid> tList = new List<Guid>();
+            List<Guid> tList = new List<Guid>();
 
             foreach (string item in inputStrings)
                 if (Guid.TryParse(item, out var guid))
@@ -103,9 +103,9 @@ namespace System
         public static Guid[] GuidByString(this string[] inputStrings)
         {
             if (inputStrings == null || inputStrings.Length == 0)
-                return new Guid[] { };
+                return Array.Empty<Guid>();
 
-            IList<Guid> tList = new List<Guid>();
+            List<Guid> tList = new List<Guid>();
 
             foreach (string item in inputStrings)
                 if (Guid.TryParse(item, out var guid))
