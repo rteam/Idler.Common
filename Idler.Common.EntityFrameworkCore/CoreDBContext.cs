@@ -1,5 +1,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using Idler.Common.Core;
 using Idler.Common.Core.Domain;
 using Idler.Common.Core.Session;
@@ -45,6 +47,18 @@ namespace Idler.Common.EntityFrameworkCore
         {
             this.ApplyBCDBContextSpecial(this.CoreSession);
             return base.SaveChanges();
+        }
+
+        /// <summary>
+        /// 保存更改（异步）
+        /// </summary>
+        /// <param name="acceptAllChangesOnSuccess">是否在成功后接受所有更改</param>
+        /// <param name="cancellationToken">取消令牌</param>
+        /// <returns>影响的记录数</returns>
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            this.ApplyBCDBContextSpecial(this.CoreSession);
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
         }
 
         /// <summary>
