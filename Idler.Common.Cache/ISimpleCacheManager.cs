@@ -26,6 +26,38 @@ namespace Idler.Common.Cache
         /// <param name="region">分区</param>
         /// <returns></returns>
         bool RemoveRegion(string region);
+
+        /// <summary>
+        /// 新增或更新有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="score">成员分数</param>
+        /// <param name="member">成员值</param>
+        /// <param name="region">分区</param>
+        /// <returns>操作是否成功</returns>
+        bool SortedSetAdd(string key, decimal score, string member, string region = "");
+
+        /// <summary>
+        /// 按分数范围读取有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="minScore">最小分数</param>
+        /// <param name="maxScore">最大分数</param>
+        /// <param name="skip">跳过数量</param>
+        /// <param name="take">返回数量，小于等于零时不限制</param>
+        /// <param name="region">分区</param>
+        /// <returns>按分数升序排列的成员</returns>
+        string[] SortedSetRangeByScore(string key, decimal minScore, decimal maxScore, int skip = 0, int take = 0, string region = "");
+
+        /// <summary>
+        /// 删除有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="member">成员值</param>
+        /// <param name="region">分区</param>
+        /// <returns>是否删除成功</returns>
+        bool SortedSetRemove(string key, string member, string region = "");
+
         /// <summary>
         /// 添加或更新
         /// </summary>

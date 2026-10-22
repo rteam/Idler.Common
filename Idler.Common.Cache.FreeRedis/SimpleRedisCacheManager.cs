@@ -159,6 +159,69 @@ namespace Idler.Common.Cache.FreeRedis
         }
 
         /// <summary>
+        /// 新增或更新有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="score">成员分数</param>
+        /// <param name="member">成员值</param>
+        /// <param name="region">分区</param>
+        /// <returns>操作是否成功</returns>
+        public virtual bool SortedSetAdd(string key, decimal score, string member, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            member.ThrowIfNull(nameof(member));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            this.Client.ZAdd(cacheKey, score, member);
+
+            if (this.Setting.ExpiresTime > 0)
+            {
+                this.Client.Expire(cacheKey, this.Setting.ExpiresTime);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 按分数范围读取有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="minScore">最小分数</param>
+        /// <param name="maxScore">最大分数</param>
+        /// <param name="skip">跳过数量</param>
+        /// <param name="take">返回数量，小于等于零时不限制</param>
+        /// <param name="region">分区</param>
+        /// <returns>按分数升序排列的成员</returns>
+        public virtual string[] SortedSetRangeByScore(string key, decimal minScore, decimal maxScore, int skip, int take, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+
+            if (skip < 0)
+                throw new ArgumentOutOfRangeException(nameof(skip));
+            if (take < 0)
+                throw new ArgumentOutOfRangeException(nameof(take));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.ZRangeByScore(cacheKey, minScore, maxScore, skip, take) ?? Array.Empty<string>();
+        }
+
+        /// <summary>
+        /// 删除有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="member">成员值</param>
+        /// <param name="region">分区</param>
+        /// <returns>是否删除成功</returns>
+        public virtual bool SortedSetRemove(string key, string member, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            member.ThrowIfNull(nameof(member));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.ZRem(cacheKey, member) > 0;
+        }
+
+        /// <summary>
         /// 获取或添加缓存
         /// </summary>
         /// <param name="key">缓存Key</param>
