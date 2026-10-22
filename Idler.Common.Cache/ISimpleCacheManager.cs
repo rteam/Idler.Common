@@ -59,6 +59,41 @@ namespace Idler.Common.Cache
         bool SortedSetRemove(string key, string member, string region = "");
 
         /// <summary>
+        /// 获取Hash全部字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="region">分区</param>
+        /// <returns>Hash字段集合</returns>
+        Dictionary<string, string> HashGetAll(string key, string region = "");
+
+        /// <summary>
+        /// 获取Hash指定字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="field">字段</param>
+        /// <param name="region">分区</param>
+        /// <returns>Hash字段值</returns>
+        string HashGet(string key, string field, string region = "");
+
+        /// <summary>
+        /// 新增或更新Hash字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="values">字段值集合</param>
+        /// <param name="region">分区</param>
+        /// <returns>操作是否成功</returns>
+        bool HashSet(string key, IDictionary<string, string> values, string region = "");
+
+        /// <summary>
+        /// 删除Hash字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="fields">字段集合</param>
+        /// <param name="region">分区</param>
+        /// <returns>操作是否成功</returns>
+        bool HashDelete(string key, IEnumerable<string> fields, string region = "");
+
+        /// <summary>
         /// 添加或更新
         /// </summary>
         /// <param name="key">缓存Key</param>

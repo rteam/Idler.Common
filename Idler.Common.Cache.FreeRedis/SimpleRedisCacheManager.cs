@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -219,6 +220,83 @@ namespace Idler.Common.Cache.FreeRedis
 
             string cacheKey = this.AssembleCacheKey(key, region);
             return this.Client.ZRem(cacheKey, member) > 0;
+        }
+
+        /// <summary>
+        /// 获取Hash全部字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="region">分区</param>
+        /// <returns>Hash字段集合</returns>
+        public virtual Dictionary<string, string> HashGetAll(string key, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.HGetAll(cacheKey) ?? new Dictionary<string, string>();
+        }
+
+        /// <summary>
+        /// 获取Hash指定字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="field">字段</param>
+        /// <param name="region">分区</param>
+        /// <returns>Hash字段值</returns>
+        public virtual string HashGet(string key, string field, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            field.ThrowIfNull(nameof(field));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.HGet(cacheKey, field);
+        }
+
+        /// <summary>
+        /// 新增或更新Hash字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="values">字段值集合</param>
+        /// <param name="region">分区</param>
+        /// <returns>操作是否成功</returns>
+        public virtual bool HashSet(string key, IDictionary<string, string> values, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            if (values == null)
+                throw new ArgumentNullException(nameof(values));
+
+            if (values.Count == 0)
+                return true;
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            this.Client.HSet(cacheKey, new Dictionary<string, string>(values));
+
+            if (this.Setting.ExpiresTime > 0)
+                this.Client.Expire(cacheKey, this.Setting.ExpiresTime);
+
+            return true;
+        }
+
+        /// <summary>
+        /// 删除Hash字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="fields">字段集合</param>
+        /// <param name="region">分区</param>
+        /// <returns>操作是否成功</returns>
+        public virtual bool HashDelete(string key, IEnumerable<string> fields, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            if (fields == null)
+                throw new ArgumentNullException(nameof(fields));
+
+            string[] fieldArray = fields.ToArray();
+            if (fieldArray.Length == 0)
+                return true;
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            this.Client.HDel(cacheKey, fieldArray);
+            return true;
         }
 
         /// <summary>
