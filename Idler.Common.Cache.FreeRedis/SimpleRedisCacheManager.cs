@@ -324,34 +324,10 @@ namespace Idler.Common.Cache.FreeRedis
         }
 
         /// <summary>
-        /// 当缓存Key不存在时写入字符串值
+        /// 将缓存Key中的整数加一，并设置过期时间
         /// </summary>
         /// <remarks>
         /// 缓存配置的过期时间大于零时同时设置过期时间
-        /// </remarks>
-        /// <param name="key">缓存Key</param>
-        /// <param name="value">字符串值</param>
-        /// <param name="region">分区</param>
-        /// <returns>写入成功返回 true，缓存Key已存在返回 false</returns>
-        public virtual bool SetNx(string key, string value, string region)
-        {
-            key.ThrowIfNull(nameof(key));
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-
-            string cacheKey = this.AssembleCacheKey(key, region);
-            int expiresTime = this.Setting.ExpiresTime;
-            if (expiresTime <= 0)
-                return this.Client.SetNx(cacheKey, value);
-
-            return this.Client.SetNx(cacheKey, value, expiresTime);
-        }
-
-        /// <summary>
-        /// 将缓存Key中的整数加一
-        /// </summary>
-        /// <remarks>
-        /// 缓存Key不存在时从零开始递增，已有过期时间保持不变
         /// </remarks>
         /// <param name="key">缓存Key</param>
         /// <param name="region">分区</param>
@@ -361,7 +337,17 @@ namespace Idler.Common.Cache.FreeRedis
             key.ThrowIfNull(nameof(key));
 
             string cacheKey = this.AssembleCacheKey(key, region);
-            return this.Client.Incr(cacheKey);
+            int expiresTime = this.Setting.ExpiresTime;
+            if (expiresTime <= 0)
+                return this.Client.Incr(cacheKey);
+
+            using (RedisClient.TransactionHook transaction = this.Client.Multi())
+            {
+                transaction.Incr(cacheKey);
+                transaction.Expire(cacheKey, expiresTime);
+
+                return Convert.ToInt64(transaction.Exec()[0]);
+            }
         }
 
         /// <summary>

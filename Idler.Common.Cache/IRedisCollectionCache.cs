@@ -77,22 +77,10 @@ namespace Idler.Common.Cache
         long HashDelete(string key, IEnumerable<string> fields, string region = "");
 
         /// <summary>
-        /// 当缓存Key不存在时写入字符串值
+        /// 将缓存Key中的整数加一，并设置过期时间
         /// </summary>
         /// <remarks>
         /// 缓存配置的过期时间大于零时同时设置过期时间
-        /// </remarks>
-        /// <param name="key">缓存Key</param>
-        /// <param name="value">字符串值</param>
-        /// <param name="region">分区</param>
-        /// <returns>写入成功返回 true，缓存Key已存在返回 false</returns>
-        bool SetNx(string key, string value, string region = "");
-
-        /// <summary>
-        /// 将缓存Key中的整数加一
-        /// </summary>
-        /// <remarks>
-        /// 缓存Key不存在时从零开始递增，已有过期时间保持不变
         /// </remarks>
         /// <param name="key">缓存Key</param>
         /// <param name="region">分区</param>

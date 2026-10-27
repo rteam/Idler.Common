@@ -132,34 +132,6 @@ public class RedisCollectionCacheIntegrationTest
     }
 
     [TestMethod]
-    public void SetNx_CreatesKeyWithoutOverwriting()
-    {
-        Assert.IsTrue(this.cache.SetNx("string-nx", "0", this.region));
-        Assert.IsFalse(this.cache.SetNx("string-nx", "9", this.region));
-
-        string cacheKey = this.manager.CacheKey("string-nx", this.region);
-        Assert.AreEqual("0", this.manager.RedisClient.Get<string>(cacheKey));
-    }
-
-    [TestMethod]
-    public void SetNx_WithExpiresTime_SetsTtl()
-    {
-        Assert.IsTrue(this.expiringCache.SetNx("string-nx-exp", "0", this.region));
-
-        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-nx-exp", this.region));
-        Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"ttl={ttl}");
-    }
-
-    [TestMethod]
-    public void SetNx_WithoutExpiresTime_DoesNotSetTtl()
-    {
-        Assert.IsTrue(this.cache.SetNx("string-nx-no-exp", "0", this.region));
-
-        long ttl = this.manager.RedisClient.Ttl(this.manager.CacheKey("string-nx-no-exp", this.region));
-        Assert.AreEqual(-1, ttl);
-    }
-
-    [TestMethod]
     public void Incr_ReturnsIncrementedValue()
     {
         Assert.AreEqual(1, this.cache.Incr("string-incr", this.region));
@@ -168,16 +140,21 @@ public class RedisCollectionCacheIntegrationTest
     }
 
     [TestMethod]
-    public void Incr_PreservesTtl()
+    public void Incr_WithExpiresTime_SetsTtl()
     {
-        Assert.IsTrue(this.expiringCache.SetNx("string-incr-ttl", "0", this.region));
-        string cacheKey = this.expiringManager.CacheKey("string-incr-ttl", this.region);
-        long ttlBefore = this.expiringManager.RedisClient.Ttl(cacheKey);
-
         Assert.AreEqual(1, this.expiringCache.Incr("string-incr-ttl", this.region));
 
-        long ttlAfter = this.expiringManager.RedisClient.Ttl(cacheKey);
-        Assert.IsTrue(ttlAfter > 0 && ttlAfter <= ttlBefore, $"before={ttlBefore}, after={ttlAfter}");
+        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-incr-ttl", this.region));
+        Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"ttl={ttl}");
+    }
+
+    [TestMethod]
+    public void Incr_WithoutExpiresTime_DoesNotSetTtl()
+    {
+        Assert.AreEqual(1, this.cache.Incr("string-incr-no-exp", this.region));
+
+        long ttl = this.manager.RedisClient.Ttl(this.manager.CacheKey("string-incr-no-exp", this.region));
+        Assert.AreEqual(-1, ttl);
     }
 
     [TestMethod]
