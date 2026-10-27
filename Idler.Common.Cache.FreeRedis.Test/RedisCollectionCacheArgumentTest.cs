@@ -42,6 +42,22 @@ public class RedisCollectionCacheArgumentTest
     }
 
     [TestMethod]
+    [DataRow(null)]
+    [DataRow("")]
+    [DataRow("  ")]
+    public void StringCommands_EmptyKey_Throws(string key)
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => this.cache.SetNx(key, "0"));
+        Assert.ThrowsException<ArgumentNullException>(() => this.cache.Incr(key));
+    }
+
+    [TestMethod]
+    public void SetNx_NullValue_Throws()
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => this.cache.SetNx("k", null!));
+    }
+
+    [TestMethod]
     public void NullCollections_Throw()
     {
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.HashSet("k", null!));

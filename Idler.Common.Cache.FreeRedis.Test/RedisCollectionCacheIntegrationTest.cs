@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using JetBrains.Annotations;
 
 namespace Idler.Common.Cache.FreeRedis.Test;
@@ -128,6 +129,80 @@ public class RedisCollectionCacheIntegrationTest
     public void HashGetAll_MissingKey_ReturnsEmpty()
     {
         Assert.AreEqual(0, this.cache.HashGetAll("missing", this.region).Count);
+    }
+
+    [TestMethod]
+    public void SetNx_CreatesKeyWithoutOverwriting()
+    {
+        Assert.IsTrue(this.cache.SetNx("string-nx", "0", this.region));
+        Assert.IsFalse(this.cache.SetNx("string-nx", "9", this.region));
+
+        string cacheKey = this.manager.CacheKey("string-nx", this.region);
+        Assert.AreEqual("0", this.manager.RedisClient.Get<string>(cacheKey));
+    }
+
+    [TestMethod]
+    public void SetNx_WithExpiresTime_SetsTtl()
+    {
+        Assert.IsTrue(this.expiringCache.SetNx("string-nx-exp", "0", this.region));
+
+        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-nx-exp", this.region));
+        Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"ttl={ttl}");
+    }
+
+    [TestMethod]
+    public void SetNx_WithoutExpiresTime_DoesNotSetTtl()
+    {
+        Assert.IsTrue(this.cache.SetNx("string-nx-no-exp", "0", this.region));
+
+        long ttl = this.manager.RedisClient.Ttl(this.manager.CacheKey("string-nx-no-exp", this.region));
+        Assert.AreEqual(-1, ttl);
+    }
+
+    [TestMethod]
+    public void Incr_ReturnsIncrementedValue()
+    {
+        Assert.AreEqual(1, this.cache.Incr("string-incr", this.region));
+        Assert.AreEqual(2, this.cache.Incr("string-incr", this.region));
+        Assert.AreEqual(3, this.cache.Incr("string-incr", this.region));
+    }
+
+    [TestMethod]
+    public void Incr_PreservesTtl()
+    {
+        Assert.IsTrue(this.expiringCache.SetNx("string-incr-ttl", "0", this.region));
+        string cacheKey = this.expiringManager.CacheKey("string-incr-ttl", this.region);
+        long ttlBefore = this.expiringManager.RedisClient.Ttl(cacheKey);
+
+        Assert.AreEqual(1, this.expiringCache.Incr("string-incr-ttl", this.region));
+
+        long ttlAfter = this.expiringManager.RedisClient.Ttl(cacheKey);
+        Assert.IsTrue(ttlAfter > 0 && ttlAfter <= ttlBefore, $"before={ttlBefore}, after={ttlAfter}");
+    }
+
+    [TestMethod]
+    public void Incr_IsIsolatedByRegion()
+    {
+        string firstRegion = $"{this.region}-first";
+        string secondRegion = $"{this.region}-second";
+
+        Assert.AreEqual(1, this.cache.Incr("string-region", firstRegion));
+        Assert.AreEqual(1, this.cache.Incr("string-region", secondRegion));
+        Assert.AreEqual(2, this.cache.Incr("string-region", firstRegion));
+
+        this.manager.Remove("string-region", firstRegion);
+        this.manager.Remove("string-region", secondRegion);
+    }
+
+    [TestMethod]
+    public void Incr_Concurrent_ReturnsUniqueSequence()
+    {
+        var values = new ConcurrentBag<long>();
+
+        Parallel.For(0, 100, new ParallelOptions { MaxDegreeOfParallelism = 16 }, _ =>
+            values.Add(this.cache.Incr("string-concurrent", this.region)));
+
+        CollectionAssert.AreEqual(Enumerable.Range(1, 100).Select(t => (long)t).ToArray(), values.OrderBy(t => t).ToArray());
     }
 
     [TestMethod]
