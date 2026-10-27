@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Idler.Common.Cache
@@ -26,6 +25,7 @@ namespace Idler.Common.Cache
         /// <param name="region">分区</param>
         /// <returns></returns>
         bool RemoveRegion(string region);
+
         /// <summary>
         /// 添加或更新
         /// </summary>

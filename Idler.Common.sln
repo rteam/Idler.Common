@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idler.Common.ServiceBus.Mas
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idler.Common.ServiceBus.Dapr", "Idler.Common.ServiceBus.Dapr\Idler.Common.ServiceBus.Dapr.csproj", "{15F4E365-5A84-4665-8CE0-72686B057B06}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Idler.Common.Cache.FreeRedis.Test", "Idler.Common.Cache.FreeRedis.Test\Idler.Common.Cache.FreeRedis.Test.csproj", "{FC6F6EC8-722A-4B2C-A384-A9E1A3BB3FE1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -145,6 +147,10 @@ Global
 		{15F4E365-5A84-4665-8CE0-72686B057B06}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15F4E365-5A84-4665-8CE0-72686B057B06}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15F4E365-5A84-4665-8CE0-72686B057B06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC6F6EC8-722A-4B2C-A384-A9E1A3BB3FE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC6F6EC8-722A-4B2C-A384-A9E1A3BB3FE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC6F6EC8-722A-4B2C-A384-A9E1A3BB3FE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC6F6EC8-722A-4B2C-A384-A9E1A3BB3FE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1DA95D40-307C-4F2C-A526-035A3483B8FA} = {13E222D9-D99C-4FF1-81E4-C79D3FB84EBC}

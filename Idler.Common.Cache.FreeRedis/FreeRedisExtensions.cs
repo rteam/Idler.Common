@@ -22,12 +22,16 @@ namespace Idler.Common.Cache.FreeRedis
         public static IServiceCollection AddCacheSingleton<TCacheValue>(this IServiceCollection serviceCollection,
             string settingKey)
         {
-            serviceCollection.AddSingleton<ISimpleCacheManager<TCacheValue>>(provider =>
+            serviceCollection.AddSingleton<SimpleRedisCacheManager<TCacheValue>>(provider =>
             {
                 FreeRedisService freeRedisService = provider.GetRequiredService<FreeRedisService>();
 
                 return new SimpleRedisCacheManager<TCacheValue>(settingKey, freeRedisService);
             });
+            serviceCollection.AddSingleton<ISimpleCacheManager<TCacheValue>>(provider =>
+                provider.GetRequiredService<SimpleRedisCacheManager<TCacheValue>>());
+            serviceCollection.AddSingleton<IRedisCollectionCache<TCacheValue>>(provider =>
+                provider.GetRequiredService<SimpleRedisCacheManager<TCacheValue>>());
 
             return serviceCollection;
         }
