@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -6,7 +7,7 @@ using FreeRedis;
 
 namespace Idler.Common.Cache.FreeRedis
 {
-    public class SimpleRedisCacheManager<TCacheValue> : ISimpleCacheManager<TCacheValue>
+    public class SimpleRedisCacheManager<TCacheValue> : ISimpleCacheManager<TCacheValue>, IRedisCollectionCache<TCacheValue>
     {
         /// <summary>
         /// 成功标志
@@ -48,9 +49,9 @@ namespace Idler.Common.Cache.FreeRedis
             this.SettingKey = settingKey;
             this.FreeRedisService = freeRedisService;
             this.Option = this.FreeRedisService.Option;
-            this.Setting =
-                this.Option.Settings.SingleOrDefault(t =>
-                    t.Key.Equals(settingKey, StringComparison.OrdinalIgnoreCase));
+            this.Setting = this.Option.Settings?.SingleOrDefault(t =>
+                t.Key.Equals(settingKey, StringComparison.OrdinalIgnoreCase))
+                ?? throw new InvalidOperationException($"未找到缓存配置 {settingKey}");
         }
 
         protected readonly FreeRedisService FreeRedisService;
@@ -156,6 +157,170 @@ namespace Idler.Common.Cache.FreeRedis
             }
 
             return removeCount > 0;
+        }
+
+        /// <summary>
+        /// 新增或更新有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="score">成员分数</param>
+        /// <param name="member">成员值</param>
+        /// <param name="region">分区</param>
+        /// <returns>实际新增的成员数量，更新已有成员的分数时返回 0</returns>
+        public virtual long SortedSetAdd(string key, decimal score, string member, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            member.ThrowIfNull(nameof(member));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            int expiresTime = this.Setting.ExpiresTime;
+            if (expiresTime <= 0)
+                return this.Client.ZAdd(cacheKey, score, member);
+
+            using (RedisClient.TransactionHook transaction = this.Client.Multi())
+            {
+                transaction.ZAdd(cacheKey, score, member);
+                transaction.Expire(cacheKey, expiresTime);
+
+                return Convert.ToInt64(transaction.Exec()[0]);
+            }
+        }
+
+        /// <summary>
+        /// 按分数范围读取有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="minScore">最小分数</param>
+        /// <param name="maxScore">最大分数</param>
+        /// <param name="skip">跳过数量</param>
+        /// <param name="take">返回数量，小于等于零时不限制</param>
+        /// <param name="region">分区</param>
+        /// <returns>按分数升序排列的成员，缓存Key不存在时返回空数组</returns>
+        public virtual string[] SortedSetRangeByScore(string key, decimal minScore, decimal maxScore, int skip, int take, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+
+            var (offset, count) = ResolveRangeLimit(skip, take);
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.ZRangeByScore(cacheKey, minScore, maxScore, offset, count);
+        }
+
+        /// <summary>
+        /// 将 skip / take 转换为 FreeRedis ZRangeByScore 的 offset / count
+        /// </summary>
+        /// <remarks>
+        /// FreeRedis 仅在 offset &gt; 0 或 count &gt; 0 时附加 LIMIT，
+        /// count 为 -1 时 Redis 返回 offset 之后的全部成员
+        /// </remarks>
+        /// <param name="skip">跳过数量</param>
+        /// <param name="take">返回数量，小于等于零时不限制</param>
+        /// <returns>offset 与 count</returns>
+        internal static (int Offset, int Count) ResolveRangeLimit(int skip, int take)
+        {
+            if (skip < 0)
+                throw new ArgumentOutOfRangeException(nameof(skip));
+
+            return (skip, take > 0 ? take : -1);
+        }
+
+        /// <summary>
+        /// 删除有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="member">成员值</param>
+        /// <param name="region">分区</param>
+        /// <returns>实际删除的成员数量</returns>
+        public virtual long SortedSetRemove(string key, string member, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            member.ThrowIfNull(nameof(member));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.ZRem(cacheKey, member);
+        }
+
+        /// <summary>
+        /// 获取Hash全部字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="region">分区</param>
+        /// <returns>Hash字段集合，缓存Key不存在时返回空字典</returns>
+        public virtual Dictionary<string, string> HashGetAll(string key, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.HGetAll(cacheKey);
+        }
+
+        /// <summary>
+        /// 获取Hash指定字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="field">字段</param>
+        /// <param name="region">分区</param>
+        /// <returns>Hash字段值，字段不存在时返回 null</returns>
+        public virtual string HashGet(string key, string field, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            field.ThrowIfNull(nameof(field));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.HGet(cacheKey, field);
+        }
+
+        /// <summary>
+        /// 新增或更新Hash字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="values">字段值集合</param>
+        /// <param name="region">分区</param>
+        /// <returns>实际新增的字段数量，更新已有字段时不计入</returns>
+        public virtual long HashSet(string key, IDictionary<string, string> values, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            if (values == null)
+                throw new ArgumentNullException(nameof(values));
+
+            if (values.Count == 0)
+                return 0;
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            var fieldValues = new Dictionary<string, string>(values);
+            int expiresTime = this.Setting.ExpiresTime;
+            if (expiresTime <= 0)
+                return this.Client.HSet(cacheKey, fieldValues);
+
+            using (RedisClient.TransactionHook transaction = this.Client.Multi())
+            {
+                transaction.HSet(cacheKey, fieldValues);
+                transaction.Expire(cacheKey, expiresTime);
+
+                return Convert.ToInt64(transaction.Exec()[0]);
+            }
+        }
+
+        /// <summary>
+        /// 删除Hash字段
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="fields">字段集合</param>
+        /// <param name="region">分区</param>
+        /// <returns>实际删除的字段数量</returns>
+        public virtual long HashDelete(string key, IEnumerable<string> fields, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            if (fields == null)
+                throw new ArgumentNullException(nameof(fields));
+
+            string[] fieldArray = fields.ToArray();
+            if (fieldArray.Length == 0)
+                return 0;
+            if (fieldArray.Any(t => t == null))
+                throw new ArgumentException("字段集合不能包含空值", nameof(fields));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.HDel(cacheKey, fieldArray);
         }
 
         /// <summary>
