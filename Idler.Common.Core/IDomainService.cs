@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Idler.Common.Core
 {
     public interface IDomainService
@@ -10,6 +12,6 @@ namespace Idler.Common.Core
         /// <summary>
         /// 保存更改
         /// </summary>
-        void SaveChangeAsync();
+        Task SaveChangeAsync();
     }
 }

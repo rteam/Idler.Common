@@ -1,4 +1,6 @@
-﻿namespace Idler.Common.Core
+﻿using System.Threading.Tasks;
+
+namespace Idler.Common.Core
 {
     public abstract class BaseDomainService : IDomainService
     {
@@ -29,9 +31,9 @@
         /// <summary>
         /// 保存更改
         /// </summary>
-        public void SaveChangeAsync()
+        public Task SaveChangeAsync()
         {
-            this.UnitOfWork.CommitAsync();
+            return this.UnitOfWork.CommitAsync();
         }
 
         #endregion
