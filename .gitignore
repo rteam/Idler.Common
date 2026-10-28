@@ -398,3 +398,5 @@ FodyWeavers.xsd
 *.sln.iml
 Idler.Common.OSS.Test/Config/OSSSetting.json
 Idler.Common.Attachments.OSS.Test/OSSSetting.json
+.DS_Store
+/.idea

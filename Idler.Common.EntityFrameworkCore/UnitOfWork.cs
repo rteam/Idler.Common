@@ -21,29 +21,15 @@ namespace Idler.Common.EntityFrameworkCore
         /// </summary>
         public void Commit()
         {
-            try
-            {
-                this.DataContext.SaveChanges();
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
+            this.DataContext.SaveChanges();
         }
 
         /// <summary>
         /// 签入修改
         /// </summary>
-        public async Task CommitAsync()
+        public Task CommitAsync()
         {
-            try
-            {
-                await this.DataContext.SaveChangesAsync().ConfigureAwait(false);
-            }
-            catch (System.Exception)
-            {
-                throw;
-            }
+            return this.DataContext.SaveChangesAsync();
         }
 
         /// <summary>
@@ -51,7 +37,7 @@ namespace Idler.Common.EntityFrameworkCore
         /// </summary>
         public void Dispose()
         {
-            this.DataContext.Dispose();
+            this.dBContext?.Dispose();
         }
 
         #endregion
