@@ -76,15 +76,5 @@ namespace Idler.Common.Cache
         /// <returns>实际删除的字段数量</returns>
         long HashDelete(string key, IEnumerable<string> fields, string region = "");
 
-        /// <summary>
-        /// 将缓存Key中的整数加一，并设置过期时间
-        /// </summary>
-        /// <remarks>
-        /// 缓存配置的过期时间大于零时同时设置过期时间
-        /// </remarks>
-        /// <param name="key">缓存Key</param>
-        /// <param name="region">分区</param>
-        /// <returns>递增后的值</returns>
-        long Incr(string key, string region = "");
     }
 }
