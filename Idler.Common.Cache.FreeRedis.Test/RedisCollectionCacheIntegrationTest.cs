@@ -172,11 +172,20 @@ public class RedisCollectionCacheIntegrationTest
     }
 
     [TestMethod]
-    public void Incr_DoesNotSetTtl()
+    public void Incr_WithExpiresTime_SetsTtl()
     {
-        Assert.AreEqual(1, this.expiringCommandCache.Incr("string-incr-one-no-exp", this.region));
+        Assert.AreEqual(1, this.expiringCommandCache.Incr("string-incr-one-with-exp", this.region));
 
-        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-incr-one-no-exp", this.region));
+        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-incr-one-with-exp", this.region));
+        Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"ttl={ttl}");
+    }
+
+    [TestMethod]
+    public void Incr_WithoutExpiresTime_DoesNotSetTtl()
+    {
+        Assert.AreEqual(1, this.commandCache.Incr("string-incr-one-without-exp", this.region));
+
+        long ttl = this.manager.RedisClient.Ttl(this.manager.CacheKey("string-incr-one-without-exp", this.region));
         Assert.AreEqual(-1, ttl);
     }
 
@@ -214,11 +223,20 @@ public class RedisCollectionCacheIntegrationTest
     }
 
     [TestMethod]
-    public void IncrBy_DoesNotSetTtl()
+    public void IncrBy_WithExpiresTime_SetsTtl()
     {
-        Assert.AreEqual(5, this.expiringCommandCache.IncrBy("string-incr-no-exp", 5, this.region));
+        Assert.AreEqual(5, this.expiringCommandCache.IncrBy("string-incr-with-exp", 5, this.region));
 
-        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-incr-no-exp", this.region));
+        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-incr-with-exp", this.region));
+        Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"ttl={ttl}");
+    }
+
+    [TestMethod]
+    public void IncrBy_WithoutExpiresTime_DoesNotSetTtl()
+    {
+        Assert.AreEqual(5, this.commandCache.IncrBy("string-incr-without-exp", 5, this.region));
+
+        long ttl = this.manager.RedisClient.Ttl(this.manager.CacheKey("string-incr-without-exp", this.region));
         Assert.AreEqual(-1, ttl);
     }
 

@@ -24,7 +24,7 @@ namespace Idler.Common.Cache
         /// 将缓存Key中的整数加一
         /// </summary>
         /// <remarks>
-        /// 缓存Key不存在时从零开始递增，不设置过期时间
+        /// 缓存Key不存在时从零开始递增，缓存配置的过期时间大于零时同时设置过期时间
         /// </remarks>
         /// <param name="key">缓存Key</param>
         /// <param name="region">分区</param>
@@ -35,7 +35,7 @@ namespace Idler.Common.Cache
         /// 将缓存Key中的整数增加指定值
         /// </summary>
         /// <remarks>
-        /// 缓存Key不存在时从零开始递增，不设置过期时间
+        /// 缓存Key不存在时从零开始递增，缓存配置的过期时间大于零时同时设置过期时间
         /// </remarks>
         /// <param name="key">缓存Key</param>
         /// <param name="increment">增加的值，可为负数</param>
