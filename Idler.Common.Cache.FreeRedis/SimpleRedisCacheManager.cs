@@ -7,7 +7,7 @@ using FreeRedis;
 
 namespace Idler.Common.Cache.FreeRedis
 {
-    public class SimpleRedisCacheManager<TCacheValue> : ISimpleCacheManager<TCacheValue>, IRedisCollectionCache<TCacheValue>, IRedisStringCache<TCacheValue>
+    public class SimpleRedisCacheManager<TCacheValue> : ISimpleCacheManager<TCacheValue>, IRedisCollectionCache<TCacheValue>, IRedisCommandCache<TCacheValue>
     {
         /// <summary>
         /// 成功标志
@@ -345,6 +345,23 @@ namespace Idler.Common.Cache.FreeRedis
                 return this.Client.SetNx(cacheKey, value);
 
             return this.Client.SetNx(cacheKey, value, expiresTime);
+        }
+
+        /// <summary>
+        /// 将缓存Key中的整数加一
+        /// </summary>
+        /// <remarks>
+        /// 缓存Key不存在时从零开始递增，不设置过期时间
+        /// </remarks>
+        /// <param name="key">缓存Key</param>
+        /// <param name="region">分区</param>
+        /// <returns>递增后的值</returns>
+        public virtual long Incr(string key, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            return this.Client.Incr(cacheKey);
         }
 
         /// <summary>

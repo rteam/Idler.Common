@@ -19,7 +19,7 @@ public class FreeRedisExtensionsTest
         var manager = provider.GetRequiredService<SimpleRedisCacheManager<string>>();
         Assert.AreSame(manager, provider.GetRequiredService<ISimpleCacheManager<string>>());
         Assert.AreSame(manager, provider.GetRequiredService<IRedisCollectionCache<string>>());
-        Assert.AreSame(manager, provider.GetRequiredService<IRedisStringCache<string>>());
+        Assert.AreSame(manager, provider.GetRequiredService<IRedisCommandCache<string>>());
     }
 
     [TestMethod]
@@ -33,6 +33,6 @@ public class FreeRedisExtensionsTest
         using ServiceProvider provider = services.BuildServiceProvider();
 
         Assert.IsNotNull(provider.GetRequiredService<IRedisCollectionCache<string>>());
-        Assert.IsNotNull(provider.GetRequiredService<IRedisStringCache<string>>());
+        Assert.IsNotNull(provider.GetRequiredService<IRedisCommandCache<string>>());
     }
 }

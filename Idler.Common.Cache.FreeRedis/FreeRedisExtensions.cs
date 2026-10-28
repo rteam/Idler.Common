@@ -32,7 +32,7 @@ namespace Idler.Common.Cache.FreeRedis
                 provider.GetRequiredService<SimpleRedisCacheManager<TCacheValue>>());
             serviceCollection.AddSingleton<IRedisCollectionCache<TCacheValue>>(provider =>
                 provider.GetRequiredService<SimpleRedisCacheManager<TCacheValue>>());
-            serviceCollection.AddSingleton<IRedisStringCache<TCacheValue>>(provider =>
+            serviceCollection.AddSingleton<IRedisCommandCache<TCacheValue>>(provider =>
                 provider.GetRequiredService<SimpleRedisCacheManager<TCacheValue>>());
 
             return serviceCollection;

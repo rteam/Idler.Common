@@ -10,14 +10,14 @@ namespace Idler.Common.Cache.FreeRedis.Test;
 public class RedisCollectionCacheArgumentTest
 {
     private IRedisCollectionCache<string> cache = null!;
-    private IRedisStringCache<string> stringCache = null!;
+    private IRedisCommandCache<string> commandCache = null!;
 
     [TestInitialize]
     public void Initialize()
     {
         TestableCacheManager manager = TestCacheFactory.CreateManager();
         this.cache = manager;
-        this.stringCache = manager;
+        this.commandCache = manager;
     }
 
     [TestMethod]
@@ -50,14 +50,15 @@ public class RedisCollectionCacheArgumentTest
     [DataRow("  ")]
     public void StringCommands_EmptyKey_Throws(string key)
     {
-        Assert.ThrowsException<ArgumentNullException>(() => this.stringCache.SetNx(key, "0"));
-        Assert.ThrowsException<ArgumentNullException>(() => this.stringCache.IncrBy(key, 1));
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.SetNx(key, "0"));
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.Incr(key));
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.IncrBy(key, 1));
     }
 
     [TestMethod]
     public void SetNx_NullValue_Throws()
     {
-        Assert.ThrowsException<ArgumentNullException>(() => this.stringCache.SetNx("k", null!));
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.SetNx("k", null!));
     }
 
     [TestMethod]
