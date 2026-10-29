@@ -10,11 +10,14 @@ namespace Idler.Common.Cache.FreeRedis.Test;
 public class RedisCollectionCacheArgumentTest
 {
     private IRedisCollectionCache<string> cache = null!;
+    private IRedisCommandCache<string> commandCache = null!;
 
     [TestInitialize]
     public void Initialize()
     {
-        this.cache = TestCacheFactory.CreateManager();
+        TestableCacheManager manager = TestCacheFactory.CreateManager();
+        this.cache = manager;
+        this.commandCache = manager;
     }
 
     [TestMethod]
@@ -39,6 +42,23 @@ public class RedisCollectionCacheArgumentTest
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.SortedSetAdd("k", 1, null!));
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.SortedSetRemove("k", null!));
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.HashGet("k", null!));
+    }
+
+    [TestMethod]
+    [DataRow(null)]
+    [DataRow("")]
+    [DataRow("  ")]
+    public void StringCommands_EmptyKey_Throws(string key)
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.SetNx(key, "0"));
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.Incr(key));
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.IncrBy(key, 1));
+    }
+
+    [TestMethod]
+    public void SetNx_NullValue_Throws()
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.SetNx("k", null!));
     }
 
     [TestMethod]

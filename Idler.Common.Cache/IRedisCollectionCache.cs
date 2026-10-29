@@ -75,5 +75,6 @@ namespace Idler.Common.Cache
         /// <param name="region">分区</param>
         /// <returns>实际删除的字段数量</returns>
         long HashDelete(string key, IEnumerable<string> fields, string region = "");
+
     }
 }
