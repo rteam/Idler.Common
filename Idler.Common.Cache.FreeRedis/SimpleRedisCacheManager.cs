@@ -187,6 +187,41 @@ namespace Idler.Common.Cache.FreeRedis
         }
 
         /// <summary>
+        /// 批量新增或更新有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="members">成员分数和值集合</param>
+        /// <param name="region">分区</param>
+        /// <returns>实际新增的成员数量，更新已有成员的分数时不计入</returns>
+        public virtual long SortedSetAdd(string key, IEnumerable<(decimal Score, string Member)> members, string region)
+        {
+            key.ThrowIfNull(nameof(key));
+            if (members == null)
+                throw new ArgumentNullException(nameof(members));
+
+            (decimal Score, string Member)[] items = members.ToArray();
+            if (items.Length == 0)
+                return 0;
+            if (items.Any(t => string.IsNullOrWhiteSpace(t.Member)))
+                throw new ArgumentNullException(nameof(members));
+
+            ZMember[] values = items.Select(t => new ZMember(t.Member, t.Score)).ToArray();
+
+            string cacheKey = this.AssembleCacheKey(key, region);
+            int expiresTime = this.Setting.ExpiresTime;
+            if (expiresTime <= 0)
+                return this.Client.ZAdd(cacheKey, values);
+
+            using (RedisClient.TransactionHook transaction = this.Client.Multi())
+            {
+                transaction.ZAdd(cacheKey, values);
+                transaction.Expire(cacheKey, expiresTime);
+
+                return Convert.ToInt64(transaction.Exec()[0]);
+            }
+        }
+
+        /// <summary>
         /// 按分数范围读取有序集合成员
         /// </summary>
         /// <param name="key">缓存Key</param>

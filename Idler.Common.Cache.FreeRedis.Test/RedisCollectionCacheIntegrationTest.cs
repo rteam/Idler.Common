@@ -104,6 +104,28 @@ public class RedisCollectionCacheIntegrationTest
     }
 
     [TestMethod]
+    public void SortedSetAdd_Batch_AddsUpdatesAndReturnsNewMemberCount()
+    {
+        var initial = new[]
+        {
+            (Score: 3m, Member: "c"),
+            (Score: 1m, Member: "a"),
+            (Score: 2m, Member: "b")
+        };
+        Assert.AreEqual(3, this.cache.SortedSetAdd(KEY, initial, this.region));
+        CollectionAssert.AreEqual(new[] { "a", "b", "c" },
+            this.cache.SortedSetRangeByScore(KEY, 0, 10, region: this.region));
+
+        var update = new[]
+        {
+            (Score: 5m, Member: "a"),
+            (Score: 4m, Member: "d")
+        };
+        Assert.AreEqual(1, this.cache.SortedSetAdd(KEY, update, this.region));
+        CollectionAssert.AreEqual(new[] { "b", "c", "d", "a" },
+            this.cache.SortedSetRangeByScore(KEY, 0, 10, region: this.region));
+    }
+    [TestMethod]
     public void SortedSetRemove_ReturnsRemovedCount()
     {
         this.SeedSortedSet();
@@ -269,9 +291,10 @@ public class RedisCollectionCacheIntegrationTest
     public void Writes_WithExpiresTime_SetTtl()
     {
         this.expiringCache.SortedSetAdd("zset", 1, "a", this.region);
+        this.expiringCache.SortedSetAdd("zset-batch", new[] { (Score: 1m, Member: "a"), (Score: 2m, Member: "b") }, this.region);
         this.expiringCache.HashSet("hash", new Dictionary<string, string> { ["f"] = "v" }, this.region);
 
-        foreach (string key in new[] { "zset", "hash" })
+        foreach (string key in new[] { "zset", "zset-batch", "hash" })
         {
             long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey(key, this.region));
             Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"{key} ttl={ttl}");
@@ -282,9 +305,10 @@ public class RedisCollectionCacheIntegrationTest
     public void Writes_WithoutExpiresTime_DoNotSetTtl()
     {
         this.cache.SortedSetAdd("zset", 1, "a", this.region);
+        this.cache.SortedSetAdd("zset-batch", new[] { (Score: 1m, Member: "a"), (Score: 2m, Member: "b") }, this.region);
         this.cache.HashSet("hash", new Dictionary<string, string> { ["f"] = "v" }, this.region);
 
-        foreach (string key in new[] { "zset", "hash" })
+        foreach (string key in new[] { "zset", "zset-batch", "hash" })
             Assert.AreEqual(-1, this.manager.RedisClient.Ttl(this.manager.CacheKey(key, this.region)), key);
     }
 }
