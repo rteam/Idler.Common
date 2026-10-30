@@ -21,6 +21,15 @@ namespace Idler.Common.Cache
         long SortedSetAdd(string key, decimal score, string member, string region = "");
 
         /// <summary>
+        /// 批量新增或更新有序集合成员
+        /// </summary>
+        /// <param name="key">缓存Key</param>
+        /// <param name="members">成员分数和值集合</param>
+        /// <param name="region">分区</param>
+        /// <returns>实际新增的成员数量，更新已有成员的分数时不计入</returns>
+        long SortedSetAdd(string key, IEnumerable<(decimal Score, string Member)> members, string region = "");
+
+        /// <summary>
         /// 按分数范围读取有序集合成员
         /// </summary>
         /// <param name="key">缓存Key</param>
@@ -75,5 +84,6 @@ namespace Idler.Common.Cache
         /// <param name="region">分区</param>
         /// <returns>实际删除的字段数量</returns>
         long HashDelete(string key, IEnumerable<string> fields, string region = "");
+
     }
 }

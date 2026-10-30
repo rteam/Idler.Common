@@ -10,11 +10,14 @@ namespace Idler.Common.Cache.FreeRedis.Test;
 public class RedisCollectionCacheArgumentTest
 {
     private IRedisCollectionCache<string> cache = null!;
+    private IRedisCommandCache<string> commandCache = null!;
 
     [TestInitialize]
     public void Initialize()
     {
-        this.cache = TestCacheFactory.CreateManager();
+        TestableCacheManager manager = TestCacheFactory.CreateManager();
+        this.cache = manager;
+        this.commandCache = manager;
     }
 
     [TestMethod]
@@ -24,6 +27,7 @@ public class RedisCollectionCacheArgumentTest
     public void EmptyKey_Throws(string key)
     {
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.SortedSetAdd(key, 1, "m"));
+        Assert.ThrowsException<ArgumentNullException>(() => this.cache.SortedSetAdd(key, new[] { (Score: 1m, Member: "m") }));
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.SortedSetRangeByScore(key, 0, 1));
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.SortedSetRemove(key, "m"));
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.HashGetAll(key));
@@ -42,10 +46,43 @@ public class RedisCollectionCacheArgumentTest
     }
 
     [TestMethod]
+    [DataRow(null)]
+    [DataRow("")]
+    [DataRow("  ")]
+    public void StringCommands_EmptyKey_Throws(string key)
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.SetNx(key, "0"));
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.Incr(key));
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.IncrBy(key, 1));
+    }
+
+    [TestMethod]
+    public void SetNx_NullValue_Throws()
+    {
+        Assert.ThrowsException<ArgumentNullException>(() => this.commandCache.SetNx("k", null!));
+    }
+
+    [TestMethod]
     public void NullCollections_Throw()
     {
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.HashSet("k", null!));
+        Assert.ThrowsException<ArgumentNullException>(() => this.cache.SortedSetAdd("k", (IEnumerable<(decimal Score, string Member)>)null!));
         Assert.ThrowsException<ArgumentNullException>(() => this.cache.HashDelete("k", null!));
+    }
+
+    [TestMethod]
+    [DataRow(null)]
+    [DataRow("")]
+    [DataRow("  ")]
+    public void SortedSetAdd_BatchContainsEmptyMember_Throws(string member)
+    {
+        var members = new[]
+        {
+            (Score: 1m, Member: "a"),
+            (Score: 2m, Member: member)
+        };
+
+        Assert.ThrowsException<ArgumentNullException>(() => this.cache.SortedSetAdd("k", members));
     }
 
     [TestMethod]
@@ -66,6 +103,7 @@ public class RedisCollectionCacheArgumentTest
     {
         // 未设置 IDLER_TEST_REDIS 时连接串指向不可达地址，访问 Redis 会抛异常
         Assert.AreEqual(0, this.cache.HashSet("k", new Dictionary<string, string>()));
+        Assert.AreEqual(0, this.cache.SortedSetAdd("k", Array.Empty<(decimal Score, string Member)>()));
         Assert.AreEqual(0, this.cache.HashDelete("k", Array.Empty<string>()));
     }
 
