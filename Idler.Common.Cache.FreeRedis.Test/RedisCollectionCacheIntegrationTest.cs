@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using JetBrains.Annotations;
 
 namespace Idler.Common.Cache.FreeRedis.Test;
@@ -15,6 +16,8 @@ public class RedisCollectionCacheIntegrationTest
     private TestableCacheManager expiringManager = null!;
     private IRedisCollectionCache<string> cache = null!;
     private IRedisCollectionCache<string> expiringCache = null!;
+    private IRedisCommandCache<string> commandCache = null!;
+    private IRedisCommandCache<string> expiringCommandCache = null!;
     private string region = null!;
 
     [TestInitialize]
@@ -28,6 +31,8 @@ public class RedisCollectionCacheIntegrationTest
         this.expiringManager = TestCacheFactory.CreateManager(TestCacheFactory.EXPIRING_SETTING);
         this.cache = this.manager;
         this.expiringCache = this.expiringManager;
+        this.commandCache = this.manager;
+        this.expiringCommandCache = this.expiringManager;
     }
 
     [TestCleanup]
@@ -99,6 +104,28 @@ public class RedisCollectionCacheIntegrationTest
     }
 
     [TestMethod]
+    public void SortedSetAdd_Batch_AddsUpdatesAndReturnsNewMemberCount()
+    {
+        var initial = new[]
+        {
+            (Score: 3m, Member: "c"),
+            (Score: 1m, Member: "a"),
+            (Score: 2m, Member: "b")
+        };
+        Assert.AreEqual(3, this.cache.SortedSetAdd(KEY, initial, this.region));
+        CollectionAssert.AreEqual(new[] { "a", "b", "c" },
+            this.cache.SortedSetRangeByScore(KEY, 0, 10, region: this.region));
+
+        var update = new[]
+        {
+            (Score: 5m, Member: "a"),
+            (Score: 4m, Member: "d")
+        };
+        Assert.AreEqual(1, this.cache.SortedSetAdd(KEY, update, this.region));
+        CollectionAssert.AreEqual(new[] { "b", "c", "d", "a" },
+            this.cache.SortedSetRangeByScore(KEY, 0, 10, region: this.region));
+    }
+    [TestMethod]
     public void SortedSetRemove_ReturnsRemovedCount()
     {
         this.SeedSortedSet();
@@ -131,12 +158,143 @@ public class RedisCollectionCacheIntegrationTest
     }
 
     [TestMethod]
+    public void SetNx_CreatesKeyWithoutOverwriting()
+    {
+        Assert.IsTrue(this.commandCache.SetNx("string-nx", "0", this.region));
+        Assert.IsFalse(this.commandCache.SetNx("string-nx", "9", this.region));
+
+        string cacheKey = this.manager.CacheKey("string-nx", this.region);
+        Assert.AreEqual("0", this.manager.RedisClient.Get<string>(cacheKey));
+    }
+
+    [TestMethod]
+    public void SetNx_WithExpiresTime_SetsTtl()
+    {
+        Assert.IsTrue(this.expiringCommandCache.SetNx("string-nx-exp", "0", this.region));
+
+        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-nx-exp", this.region));
+        Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"ttl={ttl}");
+    }
+
+    [TestMethod]
+    public void SetNx_WithoutExpiresTime_DoesNotSetTtl()
+    {
+        Assert.IsTrue(this.commandCache.SetNx("string-nx-no-exp", "0", this.region));
+
+        long ttl = this.manager.RedisClient.Ttl(this.manager.CacheKey("string-nx-no-exp", this.region));
+        Assert.AreEqual(-1, ttl);
+    }
+
+    [TestMethod]
+    public void Incr_ReturnsIncrementedValue()
+    {
+        Assert.AreEqual(1, this.commandCache.Incr("string-incr-one", this.region));
+        Assert.AreEqual(2, this.commandCache.Incr("string-incr-one", this.region));
+        Assert.AreEqual(3, this.commandCache.Incr("string-incr-one", this.region));
+    }
+
+    [TestMethod]
+    public void Incr_WithExpiresTime_SetsTtl()
+    {
+        Assert.AreEqual(1, this.expiringCommandCache.Incr("string-incr-one-with-exp", this.region));
+
+        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-incr-one-with-exp", this.region));
+        Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"ttl={ttl}");
+    }
+
+    [TestMethod]
+    public void Incr_WithoutExpiresTime_DoesNotSetTtl()
+    {
+        Assert.AreEqual(1, this.commandCache.Incr("string-incr-one-without-exp", this.region));
+
+        long ttl = this.manager.RedisClient.Ttl(this.manager.CacheKey("string-incr-one-without-exp", this.region));
+        Assert.AreEqual(-1, ttl);
+    }
+
+    [TestMethod]
+    public void Incr_IsIsolatedByRegion()
+    {
+        string firstRegion = $"{this.region}-first";
+        string secondRegion = $"{this.region}-second";
+
+        Assert.AreEqual(1, this.commandCache.Incr("string-incr-one-region", firstRegion));
+        Assert.AreEqual(1, this.commandCache.Incr("string-incr-one-region", secondRegion));
+        Assert.AreEqual(2, this.commandCache.Incr("string-incr-one-region", firstRegion));
+
+        this.manager.Remove("string-incr-one-region", firstRegion);
+        this.manager.Remove("string-incr-one-region", secondRegion);
+    }
+
+    [TestMethod]
+    public void Incr_Concurrent_ReturnsUniqueSequence()
+    {
+        var values = new ConcurrentBag<long>();
+
+        Parallel.For(0, 100, new ParallelOptions { MaxDegreeOfParallelism = 16 }, _ =>
+            values.Add(this.commandCache.Incr("string-incr-one-concurrent", this.region)));
+
+        CollectionAssert.AreEqual(Enumerable.Range(1, 100).Select(t => (long)t).ToArray(), values.OrderBy(t => t).ToArray());
+    }
+
+    [TestMethod]
+    public void IncrBy_ReturnsIncrementedValue()
+    {
+        Assert.AreEqual(5, this.commandCache.IncrBy("string-incr", 5, this.region));
+        Assert.AreEqual(8, this.commandCache.IncrBy("string-incr", 3, this.region));
+        Assert.AreEqual(6, this.commandCache.IncrBy("string-incr", -2, this.region));
+    }
+
+    [TestMethod]
+    public void IncrBy_WithExpiresTime_SetsTtl()
+    {
+        Assert.AreEqual(5, this.expiringCommandCache.IncrBy("string-incr-with-exp", 5, this.region));
+
+        long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey("string-incr-with-exp", this.region));
+        Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"ttl={ttl}");
+    }
+
+    [TestMethod]
+    public void IncrBy_WithoutExpiresTime_DoesNotSetTtl()
+    {
+        Assert.AreEqual(5, this.commandCache.IncrBy("string-incr-without-exp", 5, this.region));
+
+        long ttl = this.manager.RedisClient.Ttl(this.manager.CacheKey("string-incr-without-exp", this.region));
+        Assert.AreEqual(-1, ttl);
+    }
+
+    [TestMethod]
+    public void IncrBy_IsIsolatedByRegion()
+    {
+        string firstRegion = $"{this.region}-first";
+        string secondRegion = $"{this.region}-second";
+
+        Assert.AreEqual(1, this.commandCache.IncrBy("string-region", 1, firstRegion));
+        Assert.AreEqual(1, this.commandCache.IncrBy("string-region", 1, secondRegion));
+        Assert.AreEqual(3, this.commandCache.IncrBy("string-region", 2, firstRegion));
+
+        this.manager.Remove("string-region", firstRegion);
+        this.manager.Remove("string-region", secondRegion);
+    }
+
+    [TestMethod]
+    public void IncrBy_Concurrent_ReturnsUniqueSequence()
+    {
+        var values = new ConcurrentBag<long>();
+
+        Parallel.For(0, 100, new ParallelOptions { MaxDegreeOfParallelism = 16 }, _ =>
+            values.Add(this.commandCache.IncrBy("string-concurrent", 2, this.region)));
+
+        CollectionAssert.AreEqual(Enumerable.Range(1, 100).Select(t => (long)t * 2).ToArray(), values.OrderBy(t => t).ToArray());
+    }
+
+    [TestMethod]
     public void Writes_WithExpiresTime_SetTtl()
     {
         this.expiringCache.SortedSetAdd("zset", 1, "a", this.region);
+        this.expiringCache.SortedSetAdd("zset-batch", new[] { (Score: 1m, Member: "a"), (Score: 2m, Member: "b") }, this.region);
         this.expiringCache.HashSet("hash", new Dictionary<string, string> { ["f"] = "v" }, this.region);
 
-        foreach (string key in new[] { "zset", "hash" })
+        foreach (string key in new[] { "zset", "zset-batch", "hash" })
         {
             long ttl = this.expiringManager.RedisClient.Ttl(this.expiringManager.CacheKey(key, this.region));
             Assert.IsTrue(ttl > 0 && ttl <= TestCacheFactory.EXPIRES_TIME, $"{key} ttl={ttl}");
@@ -147,9 +305,10 @@ public class RedisCollectionCacheIntegrationTest
     public void Writes_WithoutExpiresTime_DoNotSetTtl()
     {
         this.cache.SortedSetAdd("zset", 1, "a", this.region);
+        this.cache.SortedSetAdd("zset-batch", new[] { (Score: 1m, Member: "a"), (Score: 2m, Member: "b") }, this.region);
         this.cache.HashSet("hash", new Dictionary<string, string> { ["f"] = "v" }, this.region);
 
-        foreach (string key in new[] { "zset", "hash" })
+        foreach (string key in new[] { "zset", "zset-batch", "hash" })
             Assert.AreEqual(-1, this.manager.RedisClient.Ttl(this.manager.CacheKey(key, this.region)), key);
     }
 }
